@@ -1,0 +1,54 @@
+.myDivClass a:visited {
+    color: #373a37;
+}
+
+.TesxtStyle{
+    color: #373a37;
+}
+
+
+.TagListsstyleHeader{
+    color: #fbfbff;
+    height: 140px;
+    overflow: auto;
+    width: 340px;
+    background-color: #0c5460;
+}
+.Title2Style{
+    margin-bottom: 0px;
+    color: #fbfbff;
+    height: 40px;
+    overflow: auto;
+    width: 340px;
+    margin-top: 51px;
+    background-color: #3197ff;
+}
+
+/*.Order {*/
+    /*display: flex ,*/
+    /*alignItems: center*/
+/*}*/
+
+/*.ItemStyle{*/
+    /*color: #373a37;*/
+    /*margin-top: -18px;*/
+    /*background-color: #9cb4b1;*/
+/*}*/
+
+
+.PDFcore {
+    border: #566d8c;
+    margin-top: 12px;
+    margin-right: 48px;
+    background-color: #9cb4b1;
+    border-radius: 22px;
+    /* background-position: left top; */
+    background-repeat: inherit;
+    padding: 16px;
+    width: 274px;
+    /* height: 150px; */
+}
+
+.BackGorundColor{
+    background-image: url("http://www.zingerbug.com/Backgrounds/background_images/snowflakes_on_very_light_blue.gif");
+}

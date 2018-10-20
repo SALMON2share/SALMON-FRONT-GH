@@ -1,0 +1,65 @@
+
+.CrImg {
+    padding: 5vw;
+    width: 22vw;
+    marker-end: none;
+    min-width: 250px;
+    max-width: 330px;
+    border-radius: 34%;
+    margin: -47px 30vw -5vw 3vw;
+    position: center;
+}
+@media screen and (max-width: 1482px) {
+    .CrImg {
+        padding: 6vw;
+        width: 24vw;
+        marker-end: none;
+        min-width: 250px;
+        max-width: 517px;
+        border-radius: 34%;
+        margin: -47px 30vw -5vw 5vw;
+        position: center;
+    }
+}
+@media screen and (max-width: 992px) {
+    .CrImg {
+        padding: 6vw;
+        width: 31vw;
+        marker-end: none;
+        min-width: 250px;
+        max-width: 517px;
+        margin-left: 11vw;
+        margin-right: 30vw;
+        border-radius: 34%;
+        position: center;
+    }
+}
+
+/* On screens that are 600px wide or less, the background color is olive */
+@media screen and (max-width: 600px) {
+    .CrImg {
+        padding: 6vw;
+        width: 31vw;
+        marker-end: none;
+        min-width: 250px;
+        max-width: 517px;
+        margin-left: 11vw;
+        margin-right: 30vw;
+        border-radius: 34%;
+        position: center;
+    }
+}
+@media screen and (max-width: 500px) {
+    .CrImg {
+        padding: 14vw;
+        width: 31vw;
+        marker-end: none;
+        max-height: 70vw;
+        min-width: 250px;
+        max-width: 517px;
+        margin-left: 11vw;
+        margin-right: 30vw;
+        border-radius: 34%;
+        position: center;
+    }
+}

@@ -1,0 +1,12 @@
+.sogo
+{
+  padding: 3vw;
+  width: 45vw;
+  marker-end: none;
+  min-width: 300px;
+  max-width: 500px;
+  margin-left: -3vw;
+  margin-right: 20vw;
+  border-radius: 50%;
+  position: center;
+}
