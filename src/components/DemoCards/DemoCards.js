@@ -29,7 +29,7 @@ class DemoCards extends Component {
     return (
       <div className="App container">
 
-        <Header/>
+        {/*<Header/>*/}
 
         <Button variant="fab" color="primary" style={fab} onClick={this.handleClickOpen}>
           +

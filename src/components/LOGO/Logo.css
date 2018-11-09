@@ -5,8 +5,8 @@
   marker-end: none;
   min-width: 300px;
   max-width: 500px;
-  margin-left: -3vw;
+  margin-left: 1vw;
   margin-right: 20vw;
-  border-radius: 50%;
+  /*border-radius: 50%;*/
   position: center;
 }

@@ -14,6 +14,8 @@ import Register from "./components/register/Register";
 import PDFCollections from "./components/Collections/Collections";
 import DemoCards from "./components/DemoCards/DemoCards";
 import PdfAnnotatorController from "./components/PdfAnnotator/PdfAnnotatorController";
+import YouTubeApi from "./components/YoutubeAPIV3/YT_API_CORE"
+import MainSidbar from "./components/MainSidbar/MainSidbar";
 
 
 const App = () => {
@@ -31,10 +33,12 @@ const App = () => {
           {/*<Route path="/AddLink" component={AddLink}/>*/}
           {/*<Route path="/settings" component={Settings}/>*/}
           <Route path="/register" component={Register}/>
-          {/*<Route path="/Qr-Scanner" component={QrScanner}/>*/}
-          {/*<Route path="/PdfAnnotatorController" component={PdfAnnotatorController}/>*/}
-          {/*<Route path="/Collections" component={PDFCollections}/>*/}
-          {/*<Route path="/DemoCards" component={DemoCards}/>*/}
+          <Route path="/youTubeApi" component={YouTubeApi}/>
+          <Route path="/Qr-Scanner" component={QrScanner}/>
+          <Route path="/PdfAnnotatorController" component={PdfAnnotatorController}/>
+          <Route path="/Collections" component={PDFCollections}/>
+          <Route path="/DemoCards" component={DemoCards}/>
+          <Route path="/MainSidbar" component={MainSidbar}/>
         </div>
       </BrowserRouter>
     </div>

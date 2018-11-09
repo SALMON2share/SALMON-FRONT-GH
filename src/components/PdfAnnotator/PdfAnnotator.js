@@ -7,7 +7,6 @@ import testHighlights from "../../test-highlights.js";
 import Spinner from "../spinner/Spinner";
 import AnnotateSidebar from "../PdfAnnotator/AnnotateSidebar/AnnotateSidebar";
 import Button from "@material-ui/core/es/Button/Button";
-//import {LinkContainer} from "react-router-bootstrap";
 import $ from 'jquery';
 import Modal from 'react-modal';
 import NewBoard from '../home/NewBoard.js';
@@ -18,17 +17,13 @@ import Header from "../Header/Header";
 //import MainSidbar from "../MainSidbar/MainSidbar";
 
 type T_ManuscriptHighlight = T_Highlight;
-
 type Props = {};
-
 type State = {
     highlights: Array<T_ManuscriptHighlight>
 };
 
 const getNextId = () => String(Math.random()).slice(2);
-
 const parseIdFromHash = () => window.location.hash.slice("#highlight-".length);
-
 const resetHash = () => {
     window.location.hash = "";
 };
@@ -210,14 +205,14 @@ class PdfAnnotator extends Component<Props, State> {
         return (
             <div className="App" style={{ display: "flex", height: "100vh" }}>
                 <Header/>
-                <AnnotateSidebar
-                highlights={highlights}
-                resetHighlights={this.resetHighlights}
-                />
                 <Modal isOpen={this.state.modalIsOpen} onAfterOpen={this.afterOpenModal.bind(this)} onRequestClose={this.closeModal.bind(this)} style={customStyles} contentLabel="Add New Board">
                     <button className="close" onClick={this.closeModal.bind(this)}>&times;</button>
                     <NewBoard/>
                 </Modal>
+                <AnnotateSidebar
+                    highlights={highlights}
+                    resetHighlights={this.resetHighlights}
+                />
                 {/* <Button onClick={this.getData} >Fetch API</Button> */}
                  {/* <LinkContainer to="/" style={fab}>
                   <Button variant="fab" >
@@ -226,12 +221,15 @@ class PdfAnnotator extends Component<Props, State> {
                     </a>
                   </Button>
                 </LinkContainer> */}
-                <br/>
+
+                {/*<br/>*/}
+
                 <Button style={fab} onClick={this.openModal.bind(this)} variant="fab" >
                     <a className="text-white">
                       +
                     </a>
                   </Button>
+
                 <div className={this.state.PdfzIndex}
                     style={{
                         height: "100vh",
@@ -266,6 +264,7 @@ class PdfAnnotator extends Component<Props, State> {
                                             hideTipAndSelection();
                                         }}
                                     />
+
                                 )}
                                 highlightTransform={(
                                     highlight,
@@ -286,6 +285,7 @@ class PdfAnnotator extends Component<Props, State> {
                                             position={highlight.position}
                                             comment={highlight.comment}
                                         />
+
                                     ) : (
                                         <AreaHighlight
                                             highlight={highlight}
@@ -316,6 +316,8 @@ class PdfAnnotator extends Component<Props, State> {
                             />
                         )}
                     </PdfLoader>
+
+
                 </div>
             </div>
         );

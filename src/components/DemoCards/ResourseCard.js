@@ -10,7 +10,6 @@ import NoImagePreview from "../images/no-preview.jpg";
 import {GridLoader} from "react-spinners";
 import Pin from "../PIN/Pin";
 import UnPin from "../PIN/UnPin";
-//import {ToReadListItem} from './todoreadlistitem.js';
 
 
 class ResourceCard extends Component {

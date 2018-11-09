@@ -4,14 +4,13 @@ import { IndexLink, Link } from "react-router";
 // import SideNav2 from "../MainSidbar/SideNav";
 import Header from "../Header/Header";
 import PdfAnnotator from "./PdfAnnotator";
-import MainSidbar from "../PdfAnnotator/MainSidbar/MainSidbar";
+import MainSidbar from "../MainSidbar/MainSidbar";
 
 
 const PdfAnnotatorController = (props) => {
   return (
     <div>
       <Header/>
-      <MainSidbar/>
       <PdfAnnotator/>
     </div>
   );

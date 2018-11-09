@@ -11,29 +11,12 @@ type Props = {
 const updateHash = highlight => {
   window.location.hash = `highlight-${highlight.id}`;
 };
-let show1 = false;
-function AnnotateSidebar({ highlights, resetHighlights }: Props) {
 
-  const togglePersonsHandler = () => {
-    return (show1 =  true);
-  };
+const AnnotateSidebar =({ highlights, resetHighlights }: Props) => {
 
-  let persons = null;
-  if (show1) {
-    persons = (
-      <div>
-        sosis
-      </div>
-    );
-  }
   return (
-    <div className="sidebar" style={{ width: "33vw" }}>
-      {/*<button onClick={togglePersonsHandler}>*/}
-        {/*toggle*/}
-      {/*</button>*/}
+    <div className="sidebar" style={{ width: "30vw" }}>
       <div className="description" style={{ padding: "1rem" }}>
-        {/*<h2 style={{ marginBottom: "1rem" }}> SALMON  </h2>*/}
-        {/*<h3>Smart Sematic Web Annotation tool for Students</h3>*/}
         <p style={{ fontSize: "0.6rem" }}>
         </p>
         <p>
@@ -65,7 +48,6 @@ function AnnotateSidebar({ highlights, resetHighlights }: Props) {
                   style={{ marginTop: "0.5rem" }}
                 >
                   <div>
-                    {persons}
                   </div>
                   <img src={highlight.content.image} alt={"Screenshot"} />
                 </div>
@@ -86,6 +68,6 @@ function AnnotateSidebar({ highlights, resetHighlights }: Props) {
       ) : null}
     </div>
   );
-}
+};
 
 export default AnnotateSidebar;

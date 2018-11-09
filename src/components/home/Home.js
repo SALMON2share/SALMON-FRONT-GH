@@ -55,7 +55,7 @@ class Home extends Component {
       <div className="col-12 col-md-6 registration-clean  float-md-right">
         <form method="post"
               onSubmit={this.createNewBoard.bind(this)}>
-          <h2>Create New Board</h2>
+          <h2>Add new Pdf Core</h2>
           {/*sharing and learing material online*/}
           <img src={"../../../images/SALMON.png"} className="imageStyle" alt="home" />
           <div className="form-group">

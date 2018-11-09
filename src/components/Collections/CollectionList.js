@@ -3,8 +3,6 @@ import './index.css';
 
 class CollectionList extends React.Component {
 
-
-
   constructor(props) {
     super(props);
     this.state = {
@@ -62,3 +60,6 @@ class CollectionList extends React.Component {
   }
 }
 export default CollectionList;
+
+
+// fliter and search in collections

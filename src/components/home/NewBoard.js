@@ -54,7 +54,7 @@ class NewBoard extends Component {
       <div className="col-12 col-md-12 registration-clean-newboard">
         <form method="post"
               onSubmit={this.createNewBoard.bind(this)}>
-          <h2>Create New Board</h2>
+          <h2>Add new pdf-Core </h2>
           <img src="../../../images/SALMON.png" className="imageStyle" alt="newboard" />
           <div className="form-group">
             <TextField

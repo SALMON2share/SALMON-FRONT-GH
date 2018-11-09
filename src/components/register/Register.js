@@ -4,7 +4,6 @@ import TextField from "@material-ui/core/es/TextField/TextField";
 import Header from "../Header/Header";
 import StorageKeys from "../../utils/StorageKeys";
 import {registerData} from "../../utils/Connection";
-import SalmonLogo from "../LOGO/sharing and learing material online.png";
 import CRIMG from "./createUser.png";
 import "./CrImg.css";
 
@@ -100,13 +99,13 @@ class Register extends Component {
 
     render() {
 
-        return <div className="App">
-
+      return (
+        <div className="App">
             <Header/>
             <div className="registration-clean">
-              <form onSubmit={this.register.bind(this)} action="//localhost:8080/user/userReg.do">
+              <form action="//localhost:8080/user/userReg.do">
                     <h2 className="text-center">Create Account</h2>
-                     <img className="CrImg" src={CRIMG} alt="Create Account"/>
+                <img className="Img" src={CRIMG} alt="Create Account"/>
                     <div className="form-group">
                         <TextField
                           id="username"
@@ -152,7 +151,7 @@ class Register extends Component {
                     </div>
                 </form>
             </div>
-        </div>;
+      </div>)
     }
 }
 

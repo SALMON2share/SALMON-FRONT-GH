@@ -28,6 +28,7 @@ class Header extends Component {
       <div className="App">
         <nav className="navbar navbar-expand-lg navbar-dark fixed-top" style={shadow}>
           <div className="container mt-0">
+              <a href="#" >=</a>
             <LinkContainer to="/">
               <a className="navbar-brand text-white abs font-weight-bold" href="#">
                 SLAMON
@@ -55,6 +56,13 @@ class Header extends Component {
                     </a>
                   </LinkContainer>
                 </li>
+                  <li className="nav-item ">
+                      <LinkContainer to="/MainSidbar">
+                          <a className="nav-link text-white font-weight-bold">
+                              MainSidbar
+                          </a>
+                      </LinkContainer>
+                  </li>
                 <li className="nav-item " >
                   <LinkContainer to="/Collections">
                     <a className="nav-link text-white font-weight-bold">
@@ -73,6 +81,13 @@ class Header extends Component {
                   <LinkContainer to="/pdfAnnotatorController">
                     <a className="nav-link text-white font-weight-bold">
                       Annotator
+                    </a>
+                  </LinkContainer>
+                </li>
+                <li className="nav-item " >
+                  <LinkContainer to="/YouTubeApi">
+                    <a className="nav-link text-white font-weight-bold">
+                      YouTubeApi
                     </a>
                   </LinkContainer>
                 </li>

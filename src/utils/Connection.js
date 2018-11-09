@@ -134,7 +134,7 @@ function addNewReferenceData(link, board, userId) {
 }
 
 
-function loginData(email, password) {
+function loginData(username, userpass) {
 
     let axiosConfig = {
         headers: {
@@ -142,8 +142,8 @@ function loginData(email, password) {
         }
     };
     var data = {
-        'email': email,
-        'password': password
+        'username': username,
+        'userpass': userpass
     };
     return axios.post(LOGIN, data, axiosConfig)
         .then(response => {
@@ -156,19 +156,13 @@ function loginData(email, password) {
         });
 }
 
-
 function registerData(username, userpass) {
 
-    // let axiosConfig = {
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //     }
-    // };
-    var data = {
+    var sendData = {
         'username': username,
         'userpass': userpass
     };
-    return axios.post(REGISTER, data )//"//localhost:8080/user/userRegister.do"
+    return axios.post(REGISTER, sendData )//"//localhost:8080/user/userRegister.do"
         .then(response => {
             console.log("response: " + JSON.stringify(response));
             return response

@@ -7,6 +7,7 @@ import {loginData} from "../../utils/Connection";
 import StorageKeys from "../../utils/StorageKeys";
 import Logo from "../LOGO/Logo";
 import "./Login.css";
+import SalmonLoginLogoAdd from "../login/sharing and learing material online.png";
 
 
 class LoginComponent extends Component {
@@ -81,11 +82,11 @@ class LoginComponent extends Component {
         return (
             <div className="App">
                 <Header/>
-                <div className="login-clean">
-                    <form onSubmit={this.login.bind(this)}>
+                <div className="login-clean">q
+                    <form onSubmit={this.login.bind(this)} action="//localhost:8080/user/userReg.do">
                         <h2 className="sr-only">Login Form</h2>
                       <div>
-                        <Logo/>
+                        <Logo address={SalmonLoginLogoAdd}/>
                       </div>
                         {this.state.errorMessage.length > 0 ? (
                             <div className="alert alert-danger font-weight-bold">
