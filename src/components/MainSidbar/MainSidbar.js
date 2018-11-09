@@ -7,7 +7,7 @@ class MainSidbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      sidebarOpen: true
+      sidebarOpen: props.sidebarstatus
     };
   }
   root: {

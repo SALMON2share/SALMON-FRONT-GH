@@ -8,27 +8,20 @@ import TestNewCompon from "../TestNewCompon";
 // import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 // import "../../node_modules/bootstrap/dist/js/bootstrap.min.js";
 
-class Header extends Component {
-
-
-  logout(){
+const Header = (props) => {
+    const logout = () => {
     localStorage.setItem(StorageKeys.USER_ID, "");
     localStorage.setItem(StorageKeys.EMAIL, "");
     localStorage.setItem(StorageKeys.PHOTO_URL, "");
-  }
-
-
-  render() {
+  };
     const shadow = {
-      boxShadow: '1px 1px 5px rgba(0, 0, 0, .25)',
-      backgroundColor: '#27679a',
+        boxShadow: '1px 1px 5px rgba(0, 0, 0, .25)',
+        backgroundColor: '#27679a',
     };
-
     return (
       <div className="App">
         <nav className="navbar navbar-expand-lg navbar-dark fixed-top" style={shadow}>
           <div className="container mt-0">
-              <a href="#" >=</a>
             <LinkContainer to="/">
               <a className="navbar-brand text-white abs font-weight-bold" href="#">
                 SLAMON
@@ -99,7 +92,7 @@ class Header extends Component {
                   </LinkContainer>
                 </li>
                 {localStorage.getItem(StorageKeys.USER_ID) != null && localStorage.getItem(StorageKeys.USER_ID).length  > 0 ? (
-                  <li className="nav-item " onClick={this.logout.bind(this)}>
+                  <li className="nav-item " onClick={logout}>
                     <LinkContainer to="/" >
                       <a className="nav-link text-white font-weight-bold">
                         Logout
@@ -121,7 +114,6 @@ class Header extends Component {
         </nav>
       </div>
     );
-  }
-}
+};
 
 export default Header;
