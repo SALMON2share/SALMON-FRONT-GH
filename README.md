@@ -57,3 +57,7 @@ Explorer.
 ### Refrence Initial projects from SmartQr and Recat Hilighter
 https://github.com/agentcooper/react-pdf-highlighter.git
 
+## Contact 
+skype and Gmail:
+Aprin.farbod@gmail.com 
+
