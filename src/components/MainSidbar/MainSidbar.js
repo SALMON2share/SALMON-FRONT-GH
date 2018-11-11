@@ -2,12 +2,13 @@ import React from "react";
 import Sidebar from "react-sidebar";
 import DemoCards from "../DemoCards/DemoCards";
 import "./index.css";
+import Header from "../Header/Header";
 
 class MainSidbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      sidebarOpen: props.sidebarstatus
+      sidebarOpen: true
     };
   }
   root: {
@@ -57,8 +58,8 @@ class MainSidbar extends React.Component {
     bottom: 0
   };
 
-    onSetSidebarOpen = (open) => {
-    this.setState({ sidebarOpen: open });
+    onSetSidebarOpen = () => {
+    this.setState({ sidebarOpen: !(this.state.sidebarOpen) });
     };
 
   render() {
@@ -71,9 +72,7 @@ class MainSidbar extends React.Component {
             styles={{sidebar: {background: "#69b5ff", width: "430px"}}}
             pullRight={true}
         >
-            <button onClick={this.onSetSidebarOpen} className="ButtonPosition">
-                Show Link and Video sidebar
-            </button>
+            <Header toggleSidebar={this.onSetSidebarOpen}/>
           <p>sosiusss</p>
         </Sidebar>
 

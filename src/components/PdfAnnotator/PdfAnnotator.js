@@ -1,29 +1,32 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 
 import URLSearchParams from "url-search-params";
-import { PdfLoader, PdfHighlighter, Tip, Highlight, Popup, AreaHighlight } from "react-pdf-highlighter";
+import type {T_Highlight, T_NewHighlight} from "react-pdf-highlighter";
+import {AreaHighlight, Highlight, PdfHighlighter, PdfLoader, Popup, Tip} from "react-pdf-highlighter";
 
-import testHighlights from "../../test-highlights.js";
+import testHighlights from "./AnnotateSidebar/test-highlights.js";
 import Spinner from "../spinner/Spinner";
-import AnnotateSidebar from "../PdfAnnotator/AnnotateSidebar/AnnotateSidebar";
 import Button from "@material-ui/core/es/Button/Button";
-import $ from 'jquery';
 import Modal from 'react-modal';
-import NewBoard from '../home/NewBoard.js';
-
-import type { T_Highlight, T_NewHighlight } from "react-pdf-highlighter";
 import "./index.css";
+import {createNewBoardData} from "../../utils/Connection";
+import axios from 'axios';
 import Header from "../Header/Header";
-//import MainSidbar from "../MainSidbar/MainSidbar";
+import AnnotateSidebar from "./AnnotateSidebar/AnnotateSidebar";
+import AddNewPdfCore from "./AddNewPDFcore/AddNewPdfCore";
 
 type T_ManuscriptHighlight = T_Highlight;
+
 type Props = {};
+
 type State = {
     highlights: Array<T_ManuscriptHighlight>
 };
 
 const getNextId = () => String(Math.random()).slice(2);
+
 const parseIdFromHash = () => window.location.hash.slice("#highlight-".length);
+
 const resetHash = () => {
     window.location.hash = "";
 };
@@ -44,10 +47,14 @@ Modal.setAppElement('#root  ');
 
 class PdfAnnotator extends Component<Props, State> {
 
+
     state = {
         highlights: testHighlights[url] ? [...testHighlights[url]] : [],
         modalIsOpen: false,
-        PdfzIndex: 'zIndexDefault'
+        PdfzIndex: 'zIndexDefault',
+        url: DEFAULT_URL,
+        default_link: true,
+        new_url: DEFAULT_URL
     };
 
     state: State;
@@ -57,18 +64,18 @@ class PdfAnnotator extends Component<Props, State> {
             modalIsOpen: true,
             PdfzIndex: 'zIndexChanged'
         });
-      };
+    }
 
     afterOpenModal =  ()  => {
-    // references are now sync'd and can be accessed.
-    };
+        // references are now sync'd and can be accessed.
+    }
 
     closeModal =  ()  => {
         this.setState({
             modalIsOpen: false,
             PdfzIndex: 'zIndexDefault'
         });
-    };
+    }
 
     resetHighlights = () => {
         this.setState({
@@ -127,198 +134,216 @@ class PdfAnnotator extends Component<Props, State> {
         });
     }
 
-    showFile(blob){
-        // It is necessary to create a new blob object with mime-type explicitly set
-        // otherwise only Chrome works like it should
-        var newBlob = new Blob([blob], {type: "application/pdf"});
+    myCallback = (dataFromChild) => {
+        createNewBoardData(dataFromChild)
+            .then((result) => {
+                console.log(dataFromChild);
+                let url_link = dataFromChild.pdflink;
+                if (result.status === 200) {
+                    let boardTagCode = result.data.boardTagCode;
+                    this.setState({
+                        boardLink: boardTagCode
+                    });
+                }
+                else {
+                    // console.log("status3: " + result);
+                    this.setState({
+                        modalIsOpen: false,
+                        PdfzIndex: 'zIndexDefault',
+                        default_link: false
+                    });
+                    this.handleMe(url_link);
+                }
+            })
+            .catch(error => {
+                console.log("status4: " + error);
+            });
+    }
 
-        // IE doesn't allow using a blob object directly as link href
-        // instead it is necessary to use msSaveOrOpenBlob
-        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-          window.navigator.msSaveOrOpenBlob(newBlob);
-          return;
-        }
 
-        // For other browsers:
-        // Create a link pointing to the ObjectURL containing the blob.
-        const data = window.URL.createObjectURL(newBlob);
-        var link = document.createElement('a');
-        link.href = data;
-        link.download="file.pdf";
-        link.click();
-        setTimeout(function(){
-          window.URL.revokeObjectURL(data),100});
-      }
-
-    getData = () => {
-        $.getJSON('http://anyorigin.com/go?url=http%3A//africau.edu/images/default/sample.pdf&callback=?', function(data){
-            console.log(data.contents);
+    handleMe = (url_link) => {
+        axios({
+            method: 'get',
+            url: url_link
+        }).then(res => {
+            this.setState({
+                default_link: true,
+                new_url: url_link
+            })
+        }).catch(error => {
+            axios({
+                method: 'get',
+                url: 'https://cors-anywhere.herokuapp.com/' + url_link,
+                headers: {'Origin': url_link}
+            }).then(res => {
+                if (/pdf/.test(url_link)) {
+                    var blob = new Blob([res.data], {type: "application/pdf"});
+                    var blob_url = URL.createObjectURL(blob);
+                    var iframeDoc = document.querySelector('#myiframe').src = blob_url;
+                    var new_url = blob_url.split('blob:');
+                    console.log(new_url)
+                    this.setState({
+                        url: new_url[1],
+                        default_link: false
+                    })
+                } else {
+                    var blob = new Blob([res.data], {type: "text/html"});
+                    var blob_url = URL.createObjectURL(blob);
+                    var iframeDoc = document.querySelector('#myiframe').src = blob_url;
+                    var new_url = blob_url.split('blob:');
+                    console.log(new_url)
+                    this.setState({
+                        url: new_url[1],
+                        default_link: false
+                    })
+                }
+            }).catch(error => {
+                console.log(error, 'YOu have an error')
+            })
         });
-        // axios({
-        //     url: 'http://africau.edu/images/default/sample.pdf',
-        //     method: 'GET',
-        //     mode: 'cors',
-        //     headers: {
-        //         'Access-Control-Allow-Origin': '*'
-        //     },
-        //     responseType: 'text', // important
-        //   }).then((response) => {
-        //     console.log(response);
-        //   });
+    }
 
-        // fetch('http://africau.edu/images/default/sample.pdf',
-        // {neha kakkar
-        //     mode: 'cors',
-        //     headers: {
-        //         'Access-Control-Allow-Origin': '*',
-        //         'Access-Control-Allow-Headers': 'X-Custom-Header'
-        //     }
-        // }
-        // )
-        //     .then(res => res.json())
-        //     .then(json => {
-        //       console.log(json);
-        //     });
-    };
     render() {
-      const fab = {
-        position: 'fixed',
-        bottom: 20,
-        right: 20,
-        zIndex: 7,
-        backgroundColor: '#3197ff',
-      };
+        const fab = {
+            position: 'fixed',
+            bottom: 20,
+            right: 20,
+            zIndex: 7,
+            backgroundColor: '#3197ff',
+        };
 
-      const { highlights } = this.state;
-      const customStyles = {
-        content : {
-          top                   : '50%',
-          left                  : '50%',
-          right                 : 'auto',
-          bottom                : 'auto',
-          marginRight           : '-50%',
-          transform             : 'translate(-50%, -50%)',
-          zIndex: '9999'
+        const fab_demo = {
+            position: 'fixed',
+            bottom: 20,
+            left: 20,
+            zIndex: 7,
+            backgroundColor: '#3197ff',
         }
-      };
+
+        const {highlights} = this.state;
+        const customStyles = {
+            content: {
+                top: '50%',
+                left: '50%',
+                right: 'auto',
+                bottom: 'auto',
+                marginRight: '-50%',
+                transform: 'translate(-50%, -50%)',
+                zIndex: '9999'
+            }
+        };
+        const framed = {
+            width: 1100
+        }
+
+        const isdefault = this.state.default_link;
 
         return (
             <div className="App" style={{ display: "flex", height: "100vh" }}>
                 <Header/>
-                <Modal isOpen={this.state.modalIsOpen} onAfterOpen={this.afterOpenModal.bind(this)} onRequestClose={this.closeModal.bind(this)} style={customStyles} contentLabel="Add New Board">
-                    <button className="close" onClick={this.closeModal.bind(this)}>&times;</button>
-                    <NewBoard/>
-                </Modal>
                 <AnnotateSidebar
                     highlights={highlights}
                     resetHighlights={this.resetHighlights}
                 />
-                {/* <Button onClick={this.getData} >Fetch API</Button> */}
-                 {/* <LinkContainer to="/" style={fab}>
-                  <Button variant="fab" >
-                    <a className="text-white">
-                      +
-                    </a>
-                  </Button>
-                </LinkContainer> */}
+                <Modal isOpen={this.state.modalIsOpen} onAfterOpen={this.afterOpenModal.bind(this)} onRequestClose={this.closeModal.bind(this)} style={customStyles} contentLabel="Add New Board">
+                    <button className="close" onClick={this.closeModal.bind(this)}>&times;</button>
+                    <AddNewPdfCore callbackFromParent={this.myCallback}/>
+                </Modal>
 
-                {/*<br/>*/}
 
+                <Button style={fab_demo} variant="fab" onClick={this.handleMe}>GetPDF</Button>
+                <br/>
                 <Button style={fab} onClick={this.openModal.bind(this)} variant="fab" >
                     <a className="text-white">
-                      +
+                        +
                     </a>
-                  </Button>
+                </Button>
+                {isdefault ? (<div className={this.state.PdfzIndex}
+                                   style={{
+                                       height: "100vh",
+                                       width: "75vw",
+                                       overflowY: "scroll",
+                                       position: "relative",
+                                   }}
+                    >
+                        <PdfLoader url={this.state.new_url} beforeLoad={<Spinner/>}>
+                            {pdfDocument => (
+                                <PdfHighlighter
+                                    pdfDocument={pdfDocument}
+                                    enableAreaSelection={event => event.altKey}
+                                    onScrollChange={resetHash}
+                                    scrollRef={scrollTo => {
+                                        this.scrollViewerTo = scrollTo;
 
-                <div className={this.state.PdfzIndex}
-                    style={{
-                        height: "100vh",
-                        width: "75vw",
-                        overflowY: "scroll",
-                        position: "relative",
-                    }}
-                >
+                                        this.scrollToHighlightFromHash();
+                                    }}
+                                    onSelectionFinished={(
+                                        position,
+                                        content,
+                                        hideTipAndSelection,
+                                        transformSelection
+                                    ) => (
+                                        <Tip
+                                            onOpen={transformSelection}
+                                            onConfirm={comment => {
+                                                this.addHighlight({content, position, comment});
 
-                    <PdfLoader url={url} beforeLoad={<Spinner />}  >
-                        {pdfDocument => (
-                            <PdfHighlighter
-                                pdfDocument={pdfDocument}
-                                enableAreaSelection={event => event.altKey}
-                                onScrollChange={resetHash}
-                                scrollRef={scrollTo => {
-                                    this.scrollViewerTo = scrollTo;
-
-                                    this.scrollToHighlightFromHash();
-                                }}
-                                onSelectionFinished={(
-                                    position,
-                                    content,
-                                    hideTipAndSelection,
-                                    transformSelection
-                                ) => (
-                                    <Tip
-                                        onOpen={transformSelection}
-                                        onConfirm={comment => {
-                                            this.addHighlight({ content, position, comment });
-
-                                            hideTipAndSelection();
-                                        }}
-                                    />
-
-                                )}
-                                highlightTransform={(
-                                    highlight,
-                                    index,
-                                    setTip,
-                                    hideTip,
-                                    viewportToScaled,
-                                    screenshot,
-                                    isScrolledTo
-                                ) => {
-                                    const isTextHighlight = !Boolean(
-                                        highlight.content && highlight.content.image
-                                    );
-
-                                    const component = isTextHighlight ? (
-                                        <Highlight
-                                            isScrolledTo={isScrolledTo}
-                                            position={highlight.position}
-                                            comment={highlight.comment}
-                                        />
-
-                                    ) : (
-                                        <AreaHighlight
-                                            highlight={highlight}
-                                            onChange={boundingRect => {
-                                                this.updateHighlight(
-                                                    highlight.id,
-                                                    { boundingRect: viewportToScaled(boundingRect) },
-                                                    { image: screenshot(boundingRect) }
-                                                );
+                                                hideTipAndSelection();
                                             }}
                                         />
-                                    );
+                                    )}
+                                    highlightTransform={(
+                                        highlight,
+                                        index,
+                                        setTip,
+                                        hideTip,
+                                        viewportToScaled,
+                                        screenshot,
+                                        isScrolledTo
+                                    ) => {
+                                        const isTextHighlight = !Boolean(
+                                            highlight.content && highlight.content.image
+                                        );
 
-                                    return (
-                                        <Popup
-                                            popupContent={<HighlightPopup {...highlight} />}
-                                            onMouseOver={popupContent =>
-                                                setTip(highlight, highlight => popupContent)
-                                            }
-                                            onMouseOut={hideTip}
-                                            key={index}
-                                            children={component}
-                                        />
+                                        const component = isTextHighlight ? (
+                                            <Highlight
+                                                isScrolledTo={isScrolledTo}
+                                                position={highlight.position}
+                                                comment={highlight.comment}
+                                            />
+                                        ) : (
+                                            <AreaHighlight
+                                                highlight={highlight}
+                                                onChange={boundingRect => {
+                                                    this.updateHighlight(
+                                                        highlight.id,
+                                                        {boundingRect: viewportToScaled(boundingRect)},
+                                                        {image: screenshot(boundingRect)}
+                                                    );
+                                                }}
+                                            />
+                                        );
 
-                                    );
-                                }}
-                                highlights={highlights}
-                            />
-                        )}
-                    </PdfLoader>
+                                        return (
+                                            <Popup
+                                                popupContent={<HighlightPopup {...highlight} />}
+                                                onMouseOver={popupContent =>
+                                                    setTip(highlight, highlight => popupContent)
+                                                }
+                                                onMouseOut={hideTip}
+                                                key={index}
+                                                children={component}
+                                            />
 
+                                        );
+                                    }}
+                                    highlights={highlights}
+                                />
+                            )}
+                        </PdfLoader>
 
-                </div>
+                    </div>) :
+                    (<iframe style={framed} id="myiframe" src="about:blank"></iframe>)}
             </div>
         );
     }

@@ -16,8 +16,27 @@ for runnig on local host
 `npm start`
 
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](https://www.youtube.com/watch?v=YOUTUBE_VIDEO_ID_HERE)
+## project requirements :
+* React JS
+* Bootstrap
+* Redux
+* Axios
 
-### Example
+### Bootstrap
+
+npm install bootstrap
+
+Bootstrap is an open source toolkit for developing with HTML, CSS, and JS. 
+for quick start plese take look at:
+
+http://getbootstrap.com/docs/4.1/getting-started/introduction/
+
+
+
+
+
+
+### Annotation
 
 See
 [`demo/src/App.js`](https://github.com/agentcooper/react-pdf-highlighter/blob/master/demo/src/App.js)
@@ -56,8 +75,4 @@ Explorer.
 
 ### Refrence Initial projects from SmartQr and Recat Hilighter
 https://github.com/agentcooper/react-pdf-highlighter.git
-
-## Contact 
-skype and Gmail:
-Aprin.farbod@gmail.com 
 

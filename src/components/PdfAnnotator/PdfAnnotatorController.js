@@ -10,7 +10,6 @@ import MainSidbar from "../MainSidbar/MainSidbar";
 const PdfAnnotatorController = (props) => {
   return (
     <div>
-      <Header/>
       <PdfAnnotator/>
     </div>
   );
