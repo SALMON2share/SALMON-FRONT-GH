@@ -100,8 +100,6 @@ class ResourceCard extends Component {
 
             }
 
-
-
         });
     }
 

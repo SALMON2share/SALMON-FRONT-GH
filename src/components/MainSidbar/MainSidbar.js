@@ -10,6 +10,7 @@ class MainSidbar extends React.Component {
     this.state = {
       sidebarOpen: true
     };
+    this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
   }
   root: {
     position: "absolute",
@@ -58,28 +59,35 @@ class MainSidbar extends React.Component {
     bottom: 0
   };
 
-    onSetSidebarOpen = () => {
-    this.setState({ sidebarOpen: !(this.state.sidebarOpen) });
-    };
+  onSetSidebarOpen = () => {
+    this.setState({ sidebarOpen: !this.state.sidebarOpen });
+  };
 
   render() {
     return (
       <div className="size">
         <Sidebar
-            sidebar={<DemoCards/>}
-            open={this.state.sidebarOpen}
-            onSetOpen={this.onSetSidebarOpen}
-            styles={{sidebar: {background: "#69b5ff", width: "430px"}}}
-            pullRight={true}
+          sidebar={<DemoCards />}
+          open={this.props.sidebarOpen && this.state.sidebarOpen}
+          onSetOpen={this.onSetSidebarOpen}
+          styles={{ sidebar: { background: "#69b5ff", width: "430px" } }}
+          pullRight={true}
         >
-            <Header toggleSidebar={this.onSetSidebarOpen}/>
+          <Header
+            toggleSidebar={
+              this.props.toggleSidebar
+                ? this.props.toggleSidebar
+                : this.onSetSidebarOpen
+            }
+          />
           <p>sosiusss</p>
         </Sidebar>
-
       </div>
     );
   }
 }
 
+MainSidbar.defaultProps = {
+  sidebarOpen: true
+};
 export default MainSidbar;
-

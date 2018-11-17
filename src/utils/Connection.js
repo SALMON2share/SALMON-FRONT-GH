@@ -43,7 +43,8 @@ function parseUrlData(url) {
     let axiosConfig = {
         headers: {
             'Content-Type': 'application/json',
-            'x-api-key': 'JgHJdlmSTEedg5wt6JYnGNAn64zUmfAte8FgtFHV'
+            // 'x-api-key': 'JgHJdlmSTEedg5wt6JYnGNAn64zUmfAte8FgtFHV'
+             'x-api-key': 'BaQ58I3piLMBRrPx2WBFMMASMx65XwxI1wqYIGtc'
         }
     };
     return axios.get("https://mercury.postlight.com/parser?url=" + url, axiosConfig)
@@ -67,7 +68,7 @@ function createNewBoardData(title) {
     let axiosConfig = {
         headers: {
             'Content-Type': 'application/json',
-            // 'x-api-key': 'JgHJdlmSTEedg5wt6JYnGNAn64zUmfAte8FgtFHV'
+            'x-api-key': 'BaQ58I3piLMBRrPx2WBFMMASMx65XwxI1wqYIGtc'
         }
     };
     var data = {
