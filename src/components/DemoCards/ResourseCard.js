@@ -1,3 +1,4 @@
+///Resource card
 import React, { Component } from "react";
 import Card from "@material-ui/core/es/Card/Card";
 import CardMedia from "@material-ui/core/es/CardMedia/CardMedia";
@@ -10,10 +11,32 @@ import NoImagePreview from "../images/no-preview.jpg";
 import { GridLoader } from "react-spinners";
 import Pin from "../PIN/Pin";
 import UnPin from "../PIN/UnPin";
-
+import {
+  onClickMinusDemoCard,
+  onClickPlusDemoCard,
+  onClickPin
+} from "../../actions";
+import { connect } from "react-redux";
+const mapStateToProps = state => {
+  return { list: state.listDemoCards };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    onClickPlus: index => {
+      dispatch(onClickPlusDemoCard(index));
+    },
+    onClickMinus: index => {
+      dispatch(onClickMinusDemoCard(index));
+    },
+    onClickPin: index => {
+      dispatch(onClickPin(index));
+    }
+  };
+};
 class ResourceCard extends Component {
   constructor(props) {
     super(props);
+    console.log(parseUrlData(props));
     this.state = {
       previewLinkData: "",
       isUrlDataFetched: true,
@@ -60,37 +83,39 @@ class ResourceCard extends Component {
                     url: "error in url",
                     isUrlDataFetched: true,
                 });
-
-
             }
-
         });
     }
+
   togglePin = () => {
     console.log("clicked on toggle");
     const pinActive1 = this.state.pinActive;
     this.setState({ pinActive: !pinActive1 });
   };
-  onClickPlus = event => {
-    this.setState({
-      count: this.state.count + 1
-    });
-  };
-  onClickMinus = event => {
-    this.setState({
-      count: this.state.count - 1
-    });
-  };
 
   componentDidMount() {
-    this.parseUrl(this.state.url);
+    this.parseUrl(this.props.value.url);
   }
 
+  shouldComponentUpdate(props, state) {
+    if (props.value && props.value !== this.props.value) {
+      this.setState({
+        previewLinkData: "",
+        isUrlDataFetched: true,
+        title: "",
+        disc: "",
+        imgURL: "",
+        url: props.value.url
+      });
+      this.parseUrl(props.value.url);
+    }
+    return true;
+  }
   render() {
     const card = {
-      width: 390,
-      minHeight: 55,
-      maxHeight: 500,
+      width: 196,
+      minHeight: 108
+      // height: 400,
     };
     const media = {
       height: 0,
@@ -106,23 +131,6 @@ class ResourceCard extends Component {
     if (finalImageURL == null) {
       finalImageURL = NoImagePreview;
     }
-
-    let pin = null;
-    if (this.state.PinActive) {
-      pin = (
-        <div>
-          <Pin click={this.togglePin} />
-        </div>
-      );
-    } else {
-      pin = (
-        <div>
-          <UnPin click={this.togglePin} />
-        </div>
-      );
-    }
-    let Outh = null;
-
     return (
       <div className="m-2 col-centered">
         {this.state.isUrlDataFetched ? (
@@ -140,7 +148,7 @@ class ResourceCard extends Component {
                   </Typography>
                 </a>
                 <label className="text-black-50 small font-weight-bold">
-                  {this.props.value.name}
+                  {this.props.value.url}
                   {/* {this.state.previewLinkData.domain} */}
                 </label>
                 <Typography component="p">{this.state.disc}</Typography>
@@ -149,7 +157,7 @@ class ResourceCard extends Component {
               <CardActions>
                 <IconButton
                   aria-label="Add to favorites"
-                  onClick={() => this.props.onClickPlus(this.props.index)}
+                  onClick={() => this.props.onClickPlus(this.props.location)}
                 >
                   <i className="fas fa-angle-double-up text-dark" />
                 </IconButton>
@@ -158,15 +166,17 @@ class ResourceCard extends Component {
                 </label>
                 <IconButton
                   aria-label="Add to favorites"
-                  onClick={() => this.props.onClickMinus(this.props.index)}
+                  onClick={() => this.props.onClickMinus(this.props.location)}
                 >
                   <i className="fas fa-angle-double-down text-black-50" />
                 </IconButton>
                 {this.props.value.pinLocation ? (
-                  <Pin click={() => this.props.onClickPin(this.props.index)} />
+                  <Pin
+                    click={() => this.props.onClickPin(this.props.location)}
+                  />
                 ) : (
                   <UnPin
-                    click={() => this.props.onClickPin(this.props.index)}
+                    click={() => this.props.onClickPin(this.props.location)}
                   />
                 )}
               </CardActions>
@@ -186,4 +196,7 @@ class ResourceCard extends Component {
   }
 }
 
-export default ResourceCard;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ResourceCard);
