@@ -76,7 +76,7 @@ class AddNewPdfCore extends Component {
                     </div>
                     {this.state.boardLink.length > 0 ? (
                         <div>
-                            <QRCode value={this.state.QRcode = window.location.href + "board?id=" + this.state.boardLink}/>
+                            {/*<QRCode value={this.state.QRcode = window.location.href + "board?id=" + this.state.boardLink}/>*/}
                             <LinkContainer to={"board?id=" + this.state.boardLink}>
                                 <a className="nav-link text-dark font-weight-bold">
                                     {this.state.QRcode}

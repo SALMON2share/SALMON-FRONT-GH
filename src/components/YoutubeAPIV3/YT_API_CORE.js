@@ -1,14 +1,12 @@
 import React, { Component } from "react";
-// import ReactDOM from 'react-dom';
 import YTSearch from "youtube-api-search";
 import _ from "lodash";
 import SearchBar from "./Searchbar";
 import VideoList from "./VideoList";
 import VideoPlayer from "./VIdeoPlayer";
-import Header from "../Header/Header";
-// import NavBar from './NavBar'
 import { connect } from "react-redux";
 import { addDemoCard } from "../../actions";
+import MainSidbar from "../MainSidbar/MainSidbar";
 const mapDispatchToProps = dispatch => {
   return {
     onAddResource: url => {
@@ -17,11 +15,9 @@ const mapDispatchToProps = dispatch => {
   };
 };
 const YT_API = "AIzaSyD6eehCtd_pX7rIgQLJV0S1I-jMoe-wOIw";
-
 class YT_API_CORE extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       videos: [],
       selectedVideo: null,
@@ -47,7 +43,7 @@ class YT_API_CORE extends Component {
   render() {
     return (
       <div>
-        <Header />
+       <MainSidbar/>
         <div className="container">
           <SearchBar
             onChange={searchTerm => {
@@ -72,4 +68,4 @@ export default connect(
   null,
   mapDispatchToProps
 )(YT_API_CORE);
-// ReactDOM.render(<App />, document.querySelector('.app'));
+

@@ -25,10 +25,10 @@ class Header extends Component {
         return (
             <div className="App">
                 <nav className="navbar navbar-expand-lg navbar-dark fixed-top" style={shadow}>
-                    <button onClick={this.props.toggleSidebar} className={"btn btn-primary"}> = </button>
+                    <button onClick={this.props.toggleSidebar} className={"btn btn-primary"}> CARD BAR </button>
                     <div className="container mt-0">
                         <LinkContainer to="/">
-                            <a className="navbar-brand text-white abs font-weight-bold" href="#">
+                            <a className="navbar-brand text-white abs font-weight-bold">
                                 SALMON
                             </a>
                         </LinkContainer>

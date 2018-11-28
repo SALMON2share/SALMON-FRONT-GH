@@ -5,6 +5,7 @@ import { IndexLink, Link } from "react-router";
 import Header from "../Header/Header";
 import CollectionList from "./CollectionList";
 import './index.css';
+import MainSidbar from "../MainSidbar/MainSidbar";
 
 
 const PDFCollections = (props) => {
@@ -14,7 +15,7 @@ const PDFCollections = (props) => {
   };
   return (
     <div>
-      <Header/>
+      <MainSidbar/>
       <p>SALMON COLLECTION</p>
       <p>SALMON COLLECTION</p>
       <h2 className='TesxtStyle'> Collections </h2>

@@ -1,14 +1,15 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/es/TextField/TextField";
 import DialogTitle from "@material-ui/core/es/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/es/DialogContent/DialogContent";
 import DialogActions from "@material-ui/core/es/DialogActions/DialogActions";
-import { addNewReferenceData } from "../../utils/Connection";
+import {addNewReferenceData} from "../../utils/Connection";
 import StorageKeys from "../../utils/StorageKeys";
 
-import { connect } from "react-redux";
-import { addDemoCard } from "../../actions";
+import {connect} from "react-redux";
+import {addDemoCard} from "../../actions";
+
 const mapDispatchToProps = dispatch => {
   return {
     onAddResource: url => {
@@ -40,7 +41,7 @@ class AddLink extends Component {
 
   isUrlValid(userInput) {
     var res = userInput.match(
-      /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
+        /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_.~#?&//=]*)/g
     );
     if (res == null) return false;
     else return true;
@@ -100,7 +101,6 @@ class AddLink extends Component {
 
     return (
       <div className="App">
-        {/*<Header/>*/}
         <div>
           <DialogTitle id="form-dialog-title">Add new Resource</DialogTitle>
           <DialogContent>

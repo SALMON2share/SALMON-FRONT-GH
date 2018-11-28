@@ -1,5 +1,5 @@
-///Resource card
-import React, { Component } from "react";
+import "./ResourceCard.css";
+import React, {Component} from "react";
 import Card from "@material-ui/core/es/Card/Card";
 import CardMedia from "@material-ui/core/es/CardMedia/CardMedia";
 import CardContent from "@material-ui/core/es/CardContent/CardContent";
@@ -17,6 +17,7 @@ import {
   onClickPin
 } from "../../actions";
 import { connect } from "react-redux";
+
 const mapStateToProps = state => {
   return { list: state.listDemoCards };
 };
@@ -33,6 +34,7 @@ const mapDispatchToProps = dispatch => {
     }
   };
 };
+
 class ResourceCard extends Component {
   constructor(props) {
     super(props);
@@ -113,17 +115,28 @@ class ResourceCard extends Component {
   }
   render() {
     const card = {
-      width: 196,
-      minHeight: 108
-      // height: 400,
+        maxWidth: 330,
+        marginBottom: 20,
+        marginLeft: 20,
+        marginTop: 8,
+        title: {
+            fontSize: 14
+        },
+        image :{
+
+        },
+        pos: {
+            marginBottom: 124
+        }
     };
-    const media = {
+
+      const media = {
       height: 0,
       paddingTop: "56.25%" // 16:9
     };
 
     const loader = {
-      margin: 25
+      margin: 20
     };
 
     let finalImageURL = this.state.imgURL;
@@ -135,23 +148,25 @@ class ResourceCard extends Component {
       <div className="m-2 col-centered">
         {this.state.isUrlDataFetched ? (
           <div>
-            <Card style={card}>
+              <Card style={card}>
               <CardMedia
                 style={media}
                 image={finalImageURL}
                 title="Contemplative Reptile"
               />
-              <CardContent>
-                <a href={this.state.url} target="_blank">
+                  <CardContent className={"Disc"}>
+                      <a href={this.state.url} target="_blank" className={"cardContent"}>
                   <Typography gutterBottom variant="headline" component="h5">
                     {this.state.title}
                   </Typography>
                 </a>
                 <label className="text-black-50 small font-weight-bold">
-                  {this.props.value.url}
+                    {/*{this.props.value.url}*/}
                   {/* {this.state.previewLinkData.domain} */}
                 </label>
-                <Typography component="p">{this.state.disc}</Typography>
+                      <div className={"discText"}>
+                          <Typography component="p">{this.state.disc}</Typography>
+                      </div>
               </CardContent>
               {/*icons from: https://fontawesome.com/icons*/}
               <CardActions>
@@ -184,7 +199,7 @@ class ResourceCard extends Component {
           </div>
         ) : (
           <div>
-            <Card style={card}>
+              <Card className="Card">
               <div className="text-center" style={loader}>
                 <GridLoader color={"#0098d3"} loading={true} />
               </div>

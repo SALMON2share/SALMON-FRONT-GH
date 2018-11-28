@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import Header from "../Header/Header";
 import Button from "@material-ui/core/es/Button/Button";
 import {getBoardsData} from "../../utils/Connection";
 import {LinkContainer} from "react-router-bootstrap";
 import Card from "@material-ui/core/es/Card/Card";
 import QRCode from "qrcode-react";
+import MainSidbar from "../MainSidbar/MainSidbar";
 
 class Board extends Component {
 
@@ -70,7 +70,7 @@ class Board extends Component {
 
         return (
             <div className="App container">
-                <Header/>
+                <MainSidbar/>
                 <LinkContainer to="/" style={fab}>
                     <Button variant="fab" >
                         <a className="text-white">

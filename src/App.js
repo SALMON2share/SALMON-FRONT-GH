@@ -11,6 +11,7 @@ import DemoCards from "./components/DemoCards/DemoCards";
 import PdfAnnotatorController from "./components/PdfAnnotator/PdfAnnotatorController";
 import YouTubeApi from "./components/YoutubeAPIV3/YT_API_CORE"
 import MainSidbar from "./components/MainSidbar/MainSidbar";
+import Settings from "./components/settings/Settings";
 
 
 const App = () => {
@@ -26,7 +27,7 @@ const App = () => {
           {/*<Route path="/boards" component={Board}/>*/}
           <Route path="/login" component={Login}/>
           {/*<Route path="/AddLink" component={AddLink}/>*/}
-          {/*<Route path="/settings" component={Settings}/>*/}
+          <Route path="/settings" component={Settings}/>
           <Route path="/register" component={Register}/>
           <Route path="/youTubeApi" component={YouTubeApi}/>
           <Route path="/Qr-Scanner" component={QrScanner}/>
