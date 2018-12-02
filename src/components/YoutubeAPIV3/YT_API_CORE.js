@@ -33,6 +33,10 @@ class YT_API_CORE extends Component {
 
   searchYoutube(term) {
     YTSearch({ key: YT_API, term: term }, videos => {
+      videos.map(video => {
+        let url = `https://www.youtube.com/watch?v=${video.id.videoId}`;
+        this.props.onAddResource(url);
+      });
       this.setState({
         videos: videos,
         selectedVideo: videos[0]
@@ -43,7 +47,7 @@ class YT_API_CORE extends Component {
   render() {
     return (
       <div>
-       <MainSidbar/>
+        <MainSidbar />
         <div className="container">
           <SearchBar
             onChange={searchTerm => {
@@ -53,8 +57,6 @@ class YT_API_CORE extends Component {
           <VideoPlayer video={this.state.selectedVideo} />
           <VideoList
             onVideoSelect={selectedVideo => {
-              let url = `https://youtube.com/embed/${selectedVideo.id.videoId}`;
-              this.props.onAddResource(url);
               this.setState({ selectedVideo });
             }}
             videos={this.state.videos}
@@ -68,4 +70,3 @@ export default connect(
   null,
   mapDispatchToProps
 )(YT_API_CORE);
-

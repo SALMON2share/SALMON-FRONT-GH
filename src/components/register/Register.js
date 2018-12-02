@@ -34,6 +34,7 @@ class Register extends Component {
             validating: false,
             validatingConfirmPass: false,
             isRequesting: true,
+            errorMessage: " "
         };
     }
 
@@ -93,6 +94,10 @@ class Register extends Component {
           isRequesting: false,
           errorMessage: error.response.data.message
         });
+        debugger;
+          if (this.state.errorMessage == '430') {
+              alert("SOSIS");
+          }
       });
     event.preventDefault();
   }
@@ -103,7 +108,7 @@ class Register extends Component {
         <div className="App">
             <Header/>
             <div className="registration-clean">
-              <form action="//localhost:8080/user/userReg.do">
+              <form onSubmit={this.register.bind(this)}>
                     <h2 className="text-center">Create Account</h2>
                 <img className="Img" src={CRIMG} alt="Create Account"/>
                     <div className="form-group">

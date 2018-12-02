@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {LinkContainer} from "react-router-bootstrap";
 import StorageKeys from "../../utils/StorageKeys";
+import SemanticModal from "../Tags/SemanticModal";
 // styles
 // import "../../node_modules/jquery/dist/jquery.min.js";
 // import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
@@ -76,7 +77,7 @@ class Header extends Component {
                                     </LinkContainer>
                                 </li>
                                 <li className="nav-item ">
-                                    <LinkContainer to="/pdfAnnotatorController">
+                                    <LinkContainer to="/user">
                                         <a className="nav-link text-white font-weight-bold">
                                             Annotator
                                         </a>
@@ -93,6 +94,13 @@ class Header extends Component {
                                     <LinkContainer to="/DemoCards">
                                         <a className="nav-link text-white font-weight-bold">
                                             DemoCards
+                                        </a>
+                                    </LinkContainer>
+                                </li>
+                                <li className="nav-item ">
+                                    <LinkContainer to="/SemanticModal">
+                                        <a className="nav-link text-white font-weight-bold">
+                                            SemanticModal
                                         </a>
                                     </LinkContainer>
                                 </li>

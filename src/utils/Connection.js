@@ -18,7 +18,7 @@ export {
     getBoardsData,
     getBoardResourcesData,
     addNewReferenceData,
-    loginData,
+    // loginData,
     registerData,
     changePasswordData,
     voteData,
@@ -43,8 +43,8 @@ function parseUrlData(url) {
     let axiosConfig = {
         headers: {
             'Content-Type': 'application/json',
-            // 'x-api-key': 'JgHJdlmSTEedg5wt6JYnGNAn64zUmfAte8FgtFHV'
-             'x-api-key': 'BaQ58I3piLMBRrPx2WBFMMASMx65XwxI1wqYIGtc'
+            'x-api-key': 'JgHJdlmSTEedg5wt6JYnGNAn64zUmfAte8FgtFHV'
+             //'x-api-key': 'BaQ58I3piLMBRrPx2WBFMMASMx65XwxI1wqYIGtc'
         }
     };
     return axios.get("https://mercury.postlight.com/parser?url=" + url, axiosConfig)
@@ -135,35 +135,35 @@ function addNewReferenceData(link, board, userId) {
 }
 
 
-function loginData(username, userpass) {
-
-    let axiosConfig = {
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    };
-    var data = {
-        'username': username,
-        'userpass': userpass
-    };
-    return axios.post(LOGIN, data, axiosConfig)
-        .then(response => {
-            console.log("response: " + JSON.stringify(response));
-            return response
-        })
-        .catch(error => {
-            console.log("error: " + JSON.stringify(error));
-            return error
-        });
-}
+// function loginData(username, userpass) {
+//
+//     let axiosConfig = {
+//         headers: {
+//             'Content-Type': 'application/json',
+//         }
+//     };
+//     var data = {
+//         'username': username,
+//         'userpass': userpass
+//     };
+//     return axios.post(LOGIN, data, axiosConfig)
+//         .then(response => {
+//             console.log("response: " + JSON.stringify(response));
+//             return response
+//         })
+//         .catch(error => {
+//             console.log("error: " + JSON.stringify(error));
+//             return error
+//         });
+// }
 
 function registerData(username, userpass) {
-
+    debugger;
     var sendData = {
         'username': username,
         'userpass': userpass
     };
-    return axios.post(REGISTER, sendData )//"//localhost:8080/user/userRegister.do"
+    return axios.post(REGISTER, sendData)//"//localhost:8080/user/userRegister.do"
         .then(response => {
             console.log("response: " + JSON.stringify(response));
             return response
@@ -221,7 +221,18 @@ function voteData(referenceId, userId, value) {
             return error
         });
 }
+function getSemanticTags() {
 
+    return axios.get(BOARD )
+        .then(response => {
+            console.log("response: " + JSON.stringify(response));
+            return response
+        })
+        .catch(error => {
+            console.log("error:" + JSON.stringify(error));
+            return error
+        });
+}
 
 function uploadPhotoData(userId, photo) {
 

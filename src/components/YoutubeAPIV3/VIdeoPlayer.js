@@ -1,6 +1,7 @@
 import React from "react";
 
 const VideoPlayer = ({ video }) => {
+  console.log("selected video is", video);
   if (!video) {
     return <div>Loading video player...</div>;
   }
