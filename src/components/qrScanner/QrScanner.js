@@ -1,65 +1,79 @@
-import React, {Component} from 'react'
-import QrReader from 'react-qr-scanner'
-import './QrScanner.css';
+import React, { Component } from "react";
+import QrReader from "react-qr-scanner";
+import "./QrScanner.css";
 import Button from "@material-ui/core/es/Button/Button";
 import MainSidbar from "../MainSidbar/MainSidbar";
 
 class QrScanner extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            delay: 150,
-            result: ''
-        };
+  constructor(props) {
+    super(props);
+    this.state = {
+      delay: 150,
+      result: ""
+    };
 
-        this.handleScan = this.handleScan.bind(this)
-    }
+    this.handleScan = this.handleScan.bind(this);
+  }
 
-    validateForm() {
-        return this.state.result.length > 0 ;
-    }
+  validateForm() {
+    return this.state.result.length > 0;
+  }
 
-    handleError(err) {
-        console.error(err)
-    }
+  handleError(err) {
+    console.error(err);
+  }
 
-    handleScan(data) {
-        if (data) {
-            this.setState({
-                result: data,
-            })
-        }
+  handleScan(data) {
+    if (data) {
+      this.setState({
+        result: data
+      });
     }
+  }
 
-    render() {
-        const previewStyle = {
-            height: 182,
-            width: 250,
-            display: "inline",
-            background: "#000000",
-        };
-        return (
-            <div className={"App container text-center"}>
-                <MainSidbar/>
-                 <br/><br/><br/><br/><br/>
-                <div className="form-group">
-                    <QrReader
-                        className="text-center"
-                        delay={this.state.delay}
-                        style={previewStyle}
-                        onError={this.handleError}
-                        onScan={this.handleScan}
-                    />
-                    <br/><br/><br/>
-                    <a href={this.state.result} style={{ color: '#3267b2' }}>
-                        <Button variant="contained" color="primary" type="submit" disabled={!this.validateForm()}>
-                           Open Board
-                        </Button>
-                    </a>
-                </div>
-            </div>
-        )
-    }
+  render() {
+    const previewStyle = {
+      height: 182,
+      width: 250,
+      display: "inline",
+      background: "#000000"
+    };
+    return (
+      <div className={"App container text-center"}>
+        <MainSidbar
+          onClickModalOpen={() => console.log("modal open")}
+          closeModal={() => console.log("modal closed")}
+        />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <div className="form-group">
+          <QrReader
+            className="text-center"
+            delay={this.state.delay}
+            style={previewStyle}
+            onError={this.handleError}
+            onScan={this.handleScan}
+          />
+          <br />
+          <br />
+          <br />
+          <a href={this.state.result} style={{ color: "#3267b2" }}>
+            <Button
+              variant="contained"
+              color="primary"
+              type="submit"
+              disabled={!this.validateForm()}
+            >
+              Open Board
+            </Button>
+          </a>
+        </div>
+      </div>
+    );
+  }
 }
 
 export default QrScanner;

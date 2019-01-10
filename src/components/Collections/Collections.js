@@ -4,34 +4,35 @@ import { IndexLink, Link } from "react-router";
 // import SideNav2 from "../MainSidbar/SideNav";
 import Header from "../Header/Header";
 import CollectionList from "./CollectionList";
-import './index.css';
+import "./index.css";
 import MainSidbar from "../MainSidbar/MainSidbar";
 
-
-const PDFCollections = (props) => {
+const PDFCollections = props => {
   const divStyle = {
-    display: 'flex',
-    alignItems: 'center'
+    display: "flex",
+    alignItems: "center"
   };
   return (
     <div>
-      <MainSidbar/>
+      <MainSidbar
+        onClickModalOpen={() => console.log("modal open")}
+        closeModal={() => console.log("modal closed")}
+      />
       <p>SALMON COLLECTION</p>
       <p>SALMON COLLECTION</p>
-      <h2 className='TesxtStyle'> Collections </h2>
+      <h2 className="TesxtStyle"> Collections </h2>
       <p>{props.children}</p>
       {/*<MainSidbar/>*/}
       <p>SALMON COLLECTION</p>
-      <p className='TesxtStyle'>Search For collections</p>
-      <input type='text' onChange={props.changed}/>
-      <div className= 'divStyle'>
-        <CollectionList/>
-        <CollectionList/>
-        <CollectionList/>
+      <p className="TesxtStyle">Search For collections</p>
+      <input type="text" onChange={props.changed} />
+      <div className="divStyle">
+        <CollectionList />
+        <CollectionList />
+        <CollectionList />
       </div>
     </div>
   );
 };
 
 export default PDFCollections;
-

@@ -47,7 +47,10 @@ class YT_API_CORE extends Component {
   render() {
     return (
       <div>
-        <MainSidbar />
+        <MainSidbar
+          onClickModalOpen={() => console.log("modal open")}
+          closeModal={() => console.log("modal closed")}
+        />
         <div className="container">
           <SearchBar
             onChange={searchTerm => {

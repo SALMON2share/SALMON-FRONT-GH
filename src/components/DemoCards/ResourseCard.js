@@ -1,5 +1,5 @@
 import "./ResourceCard.css";
-import React, {Component} from "react";
+import React, { Component } from "react";
 import Card from "@material-ui/core/es/Card/Card";
 import CardMedia from "@material-ui/core/es/CardMedia/CardMedia";
 import CardContent from "@material-ui/core/es/CardContent/CardContent";
@@ -11,12 +11,15 @@ import NoImagePreview from "../images/no-preview.jpg";
 import { GridLoader } from "react-spinners";
 import Pin from "../PIN/Pin";
 import UnPin from "../PIN/UnPin";
+import "./ResourceCard.css";
 import {
   onClickMinusDemoCard,
   onClickPlusDemoCard,
   onClickPin
 } from "../../actions";
 import { connect } from "react-redux";
+import SemanticModal from "../Tags/SemanticModal";
+import AddModalYT from "../YoutubeAPIV3/AddModalYT";
 
 const mapStateToProps = state => {
   return { list: state.listDemoCards };
@@ -36,6 +39,12 @@ const mapDispatchToProps = dispatch => {
 };
 
 class ResourceCard extends Component {
+  togglePin = () => {
+    console.log("clicked on toggle");
+    const pinActive1 = this.state.pinActive;
+    this.setState({ pinActive: !pinActive1 });
+  };
+
   constructor(props) {
     super(props);
     console.log(parseUrlData(props));
@@ -48,52 +57,44 @@ class ResourceCard extends Component {
       url: props.value.url,
       pinActive: true,
       count: 0,
-      userIdentification: true
+      userIdentification: true,
+      modalIsOpen: false
     };
   }
-    parseUrl(url) {
-        parseUrlData(url).then((response) => {
-            console.log("return from connection function: >>> " + response);
-            if (response.status === 200) {
-                if (response.data.hasOwnProperty('title')){
 
-                    this.setState({
-                        previewLinkData: response.data,
-                        title: response.data.title,
-                        disc: response.data.excerpt,
-                        imgURL: response.data.lead_image_url,
-                        url: response.data.url,
-                        isUrlDataFetched: true,
-                    });
-                }
-                else {
-                    this.setState({
-                        previewLinkData: " -- ",
-                        title: "no title",
-                        disc: "no description",
-                        url: "error in url",
-                        isUrlDataFetched: true,
-                    });
-                }
-            }
-            else {
-
-                this.setState({
-                    previewLinkData: " -- ",
-                    title: "no title",
-                    disc: "no description",
-                    url: "error in url",
-                    isUrlDataFetched: true,
-                });
-            }
+  parseUrl(url) {
+    parseUrlData(url).then(response => {
+      console.log("return from connection function: >>> " + response);
+      if (response.status === 200) {
+        if (response.data.hasOwnProperty("title")) {
+          this.setState({
+            previewLinkData: response.data,
+            title: response.data.title,
+            disc: response.data.excerpt,
+            imgURL: response.data.lead_image_url,
+            url: response.data.url,
+            isUrlDataFetched: true
+          });
+        } else {
+          this.setState({
+            previewLinkData: " -- ",
+            title: "no title",
+            disc: "no description",
+            url: "error in url",
+            isUrlDataFetched: true
+          });
+        }
+      } else {
+        this.setState({
+          previewLinkData: " -- ",
+          title: "no title",
+          disc: "no description",
+          url: "error in url",
+          isUrlDataFetched: true
         });
-    }
-
-  togglePin = () => {
-    console.log("clicked on toggle");
-    const pinActive1 = this.state.pinActive;
-    this.setState({ pinActive: !pinActive1 });
-  };
+      }
+    });
+  }
 
   componentDidMount() {
     this.parseUrl(this.props.value.url);
@@ -113,24 +114,23 @@ class ResourceCard extends Component {
     }
     return true;
   }
+
   render() {
     const card = {
-        maxWidth: 330,
-        marginBottom: 20,
-        marginLeft: 20,
-        marginTop: 8,
-        title: {
-            fontSize: 14
-        },
-        image :{
-
-        },
-        pos: {
-            marginBottom: 124
-        }
+      maxWidth: 330,
+      marginBottom: 20,
+      marginLeft: 20,
+      marginTop: 8,
+      title: {
+        fontSize: 14
+      },
+      image: {},
+      pos: {
+        marginBottom: 124
+      }
     };
 
-      const media = {
+    const media = {
       height: 0,
       paddingTop: "56.25%" // 16:9
     };
@@ -144,29 +144,34 @@ class ResourceCard extends Component {
     if (finalImageURL == null) {
       finalImageURL = NoImagePreview;
     }
+    console.log("info==>", this.state);
     return (
       <div className="m-2 col-centered">
         {this.state.isUrlDataFetched ? (
           <div>
-              <Card style={card}>
-              <CardMedia
-                style={media}
-                image={finalImageURL}
-                title="Contemplative Reptile"
-              />
-                  <CardContent className={"Disc"}>
-                      <a href={this.state.url} target="_blank" className={"cardContent"}>
-                  <Typography gutterBottom variant="headline" component="h5">
-                    {this.state.title}
-                  </Typography>
+            <Card style={card}>
+              {finalImageURL !== "" && (
+                <img
+                  style={{ height: 100, width: "100%" }}
+                  src={finalImageURL}
+                  onClick={() =>
+                    this.props.setYoutubeUrl(this.state.previewLinkData.url)
+                  }
+                />
+              )}
+              <CardContent className={"Disc"}>
+                <a
+                  href={this.state.url}
+                  target="_blank"
+                  className={"cardContent"}
+                >
+                  <div class="text ellipsis">
+                    <span class="text-concat">{this.state.title}</span>
+                  </div>
                 </a>
-                <label className="text-black-50 small font-weight-bold">
-                    {/*{this.props.value.url}*/}
-                  {/* {this.state.previewLinkData.domain} */}
-                </label>
-                      <div className={"discText"}>
-                          <Typography component="p">{this.state.disc}</Typography>
-                      </div>
+                <div class="disc-text ellipsis">
+                  <span class="disc-text-concat">{this.state.disc}</span>
+                </div>
               </CardContent>
               {/*icons from: https://fontawesome.com/icons*/}
               <CardActions>
@@ -199,7 +204,7 @@ class ResourceCard extends Component {
           </div>
         ) : (
           <div>
-              <Card className="Card">
+            <Card className="Card">
               <div className="text-center" style={loader}>
                 <GridLoader color={"#0098d3"} loading={true} />
               </div>

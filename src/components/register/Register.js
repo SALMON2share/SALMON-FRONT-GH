@@ -53,62 +53,60 @@ class Register extends Component {
         && this.state.userpass.length > 0 && this.state.confirmPassword.length > 0;
     }
 
-    componentDidMount() {
-        if (localStorage.getItem(StorageKeys.USER_ID) != null && localStorage.getItem(StorageKeys.USER_ID).length > 0 ){
-            this.props.history.push('/');
-        }
-    }
-
-  register(event) {
-    this.setState({
-      isRequesting: true
-    });
-    registerData(this.state.username, this.state.userpass)
-      .then((result) => {
-        console.log("status1: " + result);
-        if (result.status === 200) {
-          console.log("status2: ");
-          this.setState({
-            isRequesting: false
-          });
-          let username = result.data.message.username;
-          // let username = result.data.message._id;
-          //let _photoURL = result.data.message.photo;
-          localStorage.setItem(StorageKeys.EMAIL, username);
-          //localStorage.setItem(StorageKeys.USER_ID, _userId);
-          //localStorage.setItem(StorageKeys.PHOTO_URL, _photoURL);
-          // to know about localStorage https://blog.logrocket.com/the-complete-guide-to-using-localstorage-in-javascript-apps-ba44edb53a36
-          this.props.history.push("/");
-        }
-        else {
-          this.setState({
-            isRequesting: false,
-            errorMessage: result.response.data.message
-          });
-          console.log("status3: " + result);
-        }
-      })
-      .catch(error => {
-        console.log("status4: " + error);
-        this.setState({
-          isRequesting: false,
-          errorMessage: error.response.data.message
-        });
-        debugger;
-          if (this.state.errorMessage == '430') {
-              alert("SOSIS");
-          }
-      });
-    event.preventDefault();
-  }
-
+    // componentDidMount() {
+    //     if (localStorage.getItem(StorageKeys.USER_ID) != null && localStorage.getItem(StorageKeys.USER_ID).length > 0 ){
+    //         this.props.history.push('/');
+    //     }
+    // }
+  // register(event) {
+  //   this.setState({
+  //     isRequesting: true
+  //   });
+  //   registerData(this.state.username, this.state.userpass)
+  //     .then((result) => {
+  //       console.log("status1: " + result);
+  //       if (result.status === 200) {
+  //         console.log("status2: ");
+  //         this.setState({
+  //           isRequesting: false
+  //         });
+  //         let username = result.data.message.username;
+  //         // let username = result.data.message._id;
+  //         //let _photoURL = result.data.message.photo;
+  //         localStorage.setItem(StorageKeys.EMAIL, username);
+  //         //localStorage.setItem(StorageKeys.USER_ID, _userId);
+  //         //localStorage.setItem(StorageKeys.PHOTO_URL, _photoURL);
+  //         // to know about localStorage https://blog.logrocket.com/the-complete-guide-to-using-localstorage-in-javascript-apps-ba44edb53a36
+  //         this.props.history.push("/");
+  //       }
+  //       else {
+  //         this.setState({
+  //           isRequesting: false,
+  //           errorMessage: result.response.data.message
+  //         });
+  //         console.log("status3: " + result);
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.log("status4: " + error);
+  //       this.setState({
+  //         isRequesting: false,
+  //         errorMessage: error.response.data.message
+  //       });
+  //       debugger;
+  //         if (this.state.errorMessage == '430') {
+  //             alert("SOSIS");
+  //         }
+  //     });
+  //   // event.preventDefault();
+  // }
     render() {
-
+      debugger;
       return (
         <div className="App">
             <Header/>
             <div className="registration-clean">
-              <form onSubmit={this.register.bind(this)}>
+              <form action="//localhost:8080/SalmonController_war_exploded/user/userRegister.do">
                     <h2 className="text-center">Create Account</h2>
                 <img className="Img" src={CRIMG} alt="Create Account"/>
                     <div className="form-group">
@@ -119,7 +117,7 @@ class Register extends Component {
                           name="username"
                           type="email"
                           value={this.state.username}
-                          onChange={this.handleChange}
+                          onChange={this.handleChange}v
                           margin="normal"
                           className="form-control"/>
                     </div>
@@ -150,7 +148,7 @@ class Register extends Component {
                     </div>
                     {this.renderPasswordConfirmError()}
                     <div className="form-group">
-                        <Button variant="contained" color="primary" type="submit" disabled={!this.validateForm()}>
+                        <Button variant="contained" color="primary" type="submit">
                             Create
                         </Button>
                     </div>
@@ -162,3 +160,43 @@ class Register extends Component {
 
 
 export default Register;
+
+
+// class Register extends Component {
+//   state = {
+//     username: '',
+//     userpass: '',
+//     isRequesting: true
+//   };
+//   postDataHandler = () => {
+//     const sendData = {
+//       username: this.state.username,
+//       userpass: this.state.userpass
+//
+//     };
+//
+//   };
+//
+//   render() {
+//     return (
+//       <div >
+//         <h1>Register</h1>
+//         <label>Email</label>
+//         <form action="//localhost:8080/SalmonController_war_exploded/user/userRegister.do">
+//           <input type="text" value={this.state.username}
+//                  onChange={(event) => this.setState({username: event.target.value})} name="username"/>
+//           <input type="password" value={this.state.userpass}
+//                  onChange={(event) => this.setState({userpass: event.target.value})} name="userpass"/>
+//           <button onClick={this.postDataHandler}>Add Post</button>
+//         </form>
+//
+//       </div>
+//     );
+//   }
+// }
+//
+// export default Register;
+
+// http://localhost:8080
+
+{/*<form action="//localhost:8080/SalmonController_war_exploded/user/userRegister.do">*/}

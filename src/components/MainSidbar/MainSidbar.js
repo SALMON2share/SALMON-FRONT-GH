@@ -67,7 +67,12 @@ class MainSidbar extends React.Component {
     return (
       <div className="size">
         <Sidebar
-          sidebar={<DemoCards />}
+          sidebar={
+            <DemoCards
+              onClickModalOpen={() => this.props.onClickModalOpen()}
+              closeModal={() => this.props.closeModal()}
+            />
+          }
           open={this.props.sidebarOpen && this.state.sidebarOpen}
           onSetOpen={this.onSetSidebarOpen}
           styles={{ sidebar: { background: "#69b5ff", width: "430px" } }}

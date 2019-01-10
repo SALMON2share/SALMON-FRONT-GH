@@ -1,7 +1,7 @@
 #title{
-    font:bold 48pt "Trebuchet MS";
+    font: bold 20pt "Trebuchet MS";
     text-align: center;
-    color: #F95;
+    color: #059bff;
     letter-spacing: -2px;
 }
 #title span{
@@ -23,12 +23,12 @@
 #tag-typer{
     outline: none;
     border: none;
-    padding: 6px;
-    margin: 3px;
+    padding: 10px;
+    margin: 6px;
     margin-right: -25px;
     width: 100px;
     background-color: transparent;
-    font-size: 14px;
+    font-size: 5px;
     color: #333;
 
 }
@@ -37,11 +37,11 @@
     background: #F95;
     color: #FFF;
     padding: 5px 10px;
-    margin:2px 2px 2px 20px;
+    margin: 5px 2px 2px 20px;
     font: normal 20px sans-serif;
     position: relative;
     cursor: default;
-    box-shadow:2px 3px 0 rgba(0,0,0,.2);
+    box-shadow: 3px 4px 0 rgba(0, 0, 0, .2);
     -webkit-transform-origin:0% 50%;
     -webkit-animation: swing 1s;
     -o-animation: swing 1s;
@@ -56,7 +56,7 @@
     position: absolute;
     width: 0;
     background: inherit;
-    height: 10px;
+    height: 31px;
     border: 10px solid #fafafa;
     border-right-color: transparent;
     -webkit-border-radius: 10px 0 0 10px;
@@ -106,6 +106,7 @@
     width:15px;
     height: 15px;
 }
+
 
 /* Chrome, Safari, Opera */
 @-webkit-keyframes swing

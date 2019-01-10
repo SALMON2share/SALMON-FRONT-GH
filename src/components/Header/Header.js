@@ -1,64 +1,81 @@
-import React, {Component} from 'react';
-import {LinkContainer} from "react-router-bootstrap";
+import React, { Component } from "react";
+import { LinkContainer } from "react-router-bootstrap";
 import StorageKeys from "../../utils/StorageKeys";
 import SemanticModal from "../Tags/SemanticModal";
+import { connect } from "react-redux";
 // styles
 // import "../../node_modules/jquery/dist/jquery.min.js";
 // import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 // import "../../node_modules/bootstrap/dist/js/bootstrap.min.js";
 
 class Header extends Component {
-
-
-    logout = () => {
-    localStorage.setItem(StorageKeys.USER_ID, "");
-    localStorage.setItem(StorageKeys.EMAIL, "");
-    localStorage.setItem(StorageKeys.PHOTO_URL, "");
-  };
-
-
+    constructor(props) {
+        super(props);
+        this.isLogin = this.isLogin.bind(this);
+        this.logout = this.logout.bind(this);
+        console.log("props are", this.props);
+    }
+    isLogin() {
+        if (
+            this.props.cookies &&
+            this.props.cookies.get("username") !== undefined
+        )
+            return true;
+        return false;
+    }
+    logout() {
+        console.log("cookies are", this.props.cookies);
+        this.props.cookies.remove("username", {
+            path: "/"
+        });
+    }
     render() {
         const shadow = {
-            boxShadow: '1px 1px 5px rgba(0, 0, 0, .25)',
-            backgroundColor: '#27679a',
+            boxShadow: "1px 1px 5px rgba(0, 0, 0, .25)",
+            backgroundColor: "#27679a"
         };
-
         return (
             <div className="App">
-                <nav className="navbar navbar-expand-lg navbar-dark fixed-top" style={shadow}>
-                    <button onClick={this.props.toggleSidebar} className={"btn btn-primary"}> CARD BAR </button>
+                <nav
+                    className="navbar navbar-expand-lg navbar-dark fixed-top"
+                    style={shadow}
+                >
+                    <button
+                        onClick={this.props.toggleSidebar}
+                        className={"btn btn-primary"}
+                    >
+                        {" "}
+                        CARD BAR{" "}
+                    </button>
+                    {this.isLogin() && (
+                        <div style={{ marginLeft: 10 }}>
+                            {this.props.cookies.get("username")}
+                        </div>
+                    )}
                     <div className="container mt-0">
                         <LinkContainer to="/">
                             <a className="navbar-brand text-white abs font-weight-bold">
                                 SALMON
                             </a>
                         </LinkContainer>
-                        <button className="navbar-toggler custom-toggler navbar-toggler-right"
-                                type="button"
-                                data-toggle="collapse"
-                                data-target="#navbarToggleExternalContent">
-                            <span className="navbar-toggler-icon"/>
+
+                        <button
+                            className="navbar-toggler custom-toggler navbar-toggler-right"
+                            type="button"
+                            data-toggle="collapse"
+                            data-target="#navbarToggleExternalContent"
+                        >
+                            <span className="navbar-toggler-icon" />
                         </button>
-                        <div className="collapse navbar-collapse" id="navbarToggleExternalContent">
+                        <div
+                            className="collapse navbar-collapse"
+                            id="navbarToggleExternalContent"
+                        >
                             <ul className="navbar-nav ml-auto">
-                                <li className="nav-item">
-                                    <LinkContainer to="/boards">
-                                        <a className="nav-link text-white font-weight-bold">
-                                            Boards
-                                        </a>
-                                    </LinkContainer>
-                                </li>
                                 <li className="nav-item ">
                                     <LinkContainer to="/Settings">
                                         <a className="nav-link text-white font-weight-bold">
                                             Settings
-                                        </a>
-                                    </LinkContainer>
-                                </li>
-                                <li className="nav-item ">
-                                    <LinkContainer to="/MainSidbar">
-                                        <a className="nav-link text-white font-weight-bold">
-                                            MainSidbar
                                         </a>
                                     </LinkContainer>
                                 </li>
@@ -77,19 +94,19 @@ class Header extends Component {
                                     </LinkContainer>
                                 </li>
                                 <li className="nav-item ">
-                                    <LinkContainer to="/user">
+                                    <LinkContainer to="/Annotator">
                                         <a className="nav-link text-white font-weight-bold">
                                             Annotator
                                         </a>
                                     </LinkContainer>
                                 </li>
-                                <li className="nav-item ">
-                                    <LinkContainer to="/YouTubeApi">
-                                        <a className="nav-link text-white font-weight-bold">
-                                            YouTubeApi
-                                        </a>
-                                    </LinkContainer>
-                                </li>
+                                {/*<li className="nav-item ">*/}
+                                    {/*<LinkContainer to="/YouTubeApi">*/}
+                                        {/*<a className="nav-link text-white font-weight-bold">*/}
+                                            {/*YouTubeApi*/}
+                                        {/*</a>*/}
+                                    {/*</LinkContainer>*/}
+                                {/*</li>*/}
                                 <li className="nav-item ">
                                     <LinkContainer to="/DemoCards">
                                         <a className="nav-link text-white font-weight-bold">
@@ -97,15 +114,18 @@ class Header extends Component {
                                         </a>
                                     </LinkContainer>
                                 </li>
-                                <li className="nav-item ">
-                                    <LinkContainer to="/SemanticModal">
-                                        <a className="nav-link text-white font-weight-bold">
-                                            SemanticModal
-                                        </a>
-                                    </LinkContainer>
-                                </li>
-                                {localStorage.getItem(StorageKeys.USER_ID) != null && localStorage.getItem(StorageKeys.USER_ID).length > 0 ? (
-                                    <li className="nav-item " onClick={this.logout}>
+                                {/*<li className="nav-item ">*/}
+                                    {/*<LinkContainer to="/SemanticModal">*/}
+                                        {/*<a className="nav-link text-white font-weight-bold">*/}
+                                            {/*SemanticModal*/}
+                                        {/*</a>*/}
+                                    {/*</LinkContainer>*/}
+                                {/*</li>*/}
+                                {this.isLogin() ? (
+                                    <li
+                                        className="nav-item "
+                                        onClick={this.logout}
+                                    >
                                         <LinkContainer to="/">
                                             <a className="nav-link text-white font-weight-bold">
                                                 Logout
@@ -130,7 +150,12 @@ class Header extends Component {
     }
 }
 
-export default Header;
+function mapStateToProps(state) {
+    return {
+        cookies: state.cookies
+    };
+}
+export default connect(mapStateToProps)(Header);
 
 // Header.prototype = {
 //  onToggle : PropTypes.func
