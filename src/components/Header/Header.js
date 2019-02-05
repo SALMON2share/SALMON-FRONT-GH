@@ -3,6 +3,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import StorageKeys from "../../utils/StorageKeys";
 import SemanticModal from "../Tags/SemanticModal";
 import { connect } from "react-redux";
+import AnnotateSidebar from "../PdfAnnotator/AnnotateSidebar/AnnotateSidebar";
 // styles
 // import "../../node_modules/jquery/dist/jquery.min.js";
 // import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
@@ -72,10 +73,17 @@ class Header extends Component {
                             id="navbarToggleExternalContent"
                         >
                             <ul className="navbar-nav ml-auto">
+                                {/*<li className="nav-item ">*/}
+                                    {/*<LinkContainer to="/Settings">*/}
+                                        {/*<a className="nav-link text-white font-weight-bold">*/}
+                                            {/*Settings*/}
+                                        {/*</a>*/}
+                                    {/*</LinkContainer>*/}
+                                {/*</li>*/}
                                 <li className="nav-item ">
-                                    <LinkContainer to="/Settings">
+                                    <LinkContainer to="/Annotator">
                                         <a className="nav-link text-white font-weight-bold">
-                                            Settings
+                                            Annotator
                                         </a>
                                     </LinkContainer>
                                 </li>
@@ -93,24 +101,25 @@ class Header extends Component {
                                         </a>
                                     </LinkContainer>
                                 </li>
-                                <li className="nav-item ">
-                                    <LinkContainer to="/Annotator">
-                                        <a className="nav-link text-white font-weight-bold">
-                                            Annotator
-                                        </a>
-                                    </LinkContainer>
-                                </li>
+
                                 {/*<li className="nav-item ">*/}
                                     {/*<LinkContainer to="/YouTubeApi">*/}
                                         {/*<a className="nav-link text-white font-weight-bold">*/}
                                             {/*YouTubeApi*/}
                                         {/*</a>*/}
                                     {/*</LinkContainer>*/}
+                                {/*<li className="nav-item ">*/}
+                                    {/*<LinkContainer to="/AnnotateSidebar">*/}
+                                        {/*<a className="nav-link text-white font-weight-bold">*/}
+                                            {/*Comments And Reply*/}
+                                        {/*</a>*/}
+                                    {/*</LinkContainer>*/}
+                                {/*</li>*/}
                                 {/*</li>*/}
                                 <li className="nav-item ">
                                     <LinkContainer to="/DemoCards">
                                         <a className="nav-link text-white font-weight-bold">
-                                            DemoCards
+                                            My Cards
                                         </a>
                                     </LinkContainer>
                                 </li>

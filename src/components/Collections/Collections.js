@@ -12,6 +12,7 @@ const PDFCollections = props => {
     display: "flex",
     alignItems: "center"
   };
+  // fill 12 collection from redux
   return (
     <div>
       <MainSidbar

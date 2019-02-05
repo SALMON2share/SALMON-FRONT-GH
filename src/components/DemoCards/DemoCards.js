@@ -12,6 +12,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Search from "@material-ui/icons/Search";
 import { connect } from "react-redux";
 import { addDemoCard } from "../../actions";
+import Header from "../Header/Header";
 const mapStateToProps = state => {
   return { list: state.listDemoCards };
 };
@@ -66,11 +67,12 @@ class DemoCards extends Component {
   render() {
     const fab = {
       position: "fixed",
-      bottom: 875,
+      bottom: 775,
       right: 20
     };
     const { list } = this.props;
     return (
+
       <div className="App container">
         <AddModalYT
           modalIsOpen={this.state.modalIsOpen}
@@ -82,6 +84,7 @@ class DemoCards extends Component {
           }}
           url={this.state.youtubeURL}
         />
+        <Header/>
         <Button
           variant="fab"
           color="primary"

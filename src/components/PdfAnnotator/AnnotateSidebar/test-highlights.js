@@ -1,6 +1,6 @@
 // @flow
 
-const testHighlights = { 'https://arxiv.org/pdf/1708.08021.pdf': [
+const testHighlights = { '': [
   {
     content: {
       text: " Type Checking for JavaScript"

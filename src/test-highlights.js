@@ -1,5 +1,5 @@
 // @flow
-
+// PDFCORE 1
 const testHighlights = { 'https://arxiv.org/pdf/1708.08021.pdf': [
   {
     content: {

@@ -22,7 +22,7 @@ export default class TestNewCompon extends React.Component {
 
                         {/*</Button>*/}
                     {/*<PdfAnnotator/>*/}
-                  <PdfAnnotator pdfDocument={'https://arxiv.org/pdf/1708.08021.pdf'}/>
+                  <PdfAnnotator pdfDocument={'https://arxiv.org/pdf/cs/0408001.pdf'}/>
                         {/*/!*<PdfAnnotator />*!/*/}
                 {/*</div>*/}
             </div>

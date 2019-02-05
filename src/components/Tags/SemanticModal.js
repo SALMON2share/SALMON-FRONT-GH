@@ -8,49 +8,45 @@ import SemanticTags from "./SemanticTags";
 import tag from "./Tags.png";
 import YTSearch from "youtube-api-search";
 import { connect } from "react-redux";
-import { addDemoCard } from "../../actions";
+import { addDemoCard, addNewTag, saveTags,clearAllVideoResource } from "../../actions";
 const YT_API = "AIzaSyD6eehCtd_pX7rIgQLJV0S1I-jMoe-wOIw";
 
 class SemanticModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            title: "",
             boardLink: "",
             QRcode: "",
-            items: props.tags
+            items: this.getTags(),
         };
-        this.handleChange = this.handleChange.bind(this);
+        this.saveTags = this.saveTags.bind(this);
+        this.getTags = this.getTags.bind(this);
+        this.deleteTags = this.deleteTags.bind(this);
     }
 
-    handleChange = event => {
-        this.setState({
-            title: event.target.value
-        });
+    componentDidMount(){
+        this.searchYoutube()
+    }
+    getTags = () => {
+        let ar = [];
+        if (this.props.tags && this.props.tags !== undefined) {
+            Object.keys(this.props.tags).map(item => {
+                if (item !== "hashkey" && item !== "user") {
+                    ar.push({ key: item, value: this.props.tags[item] });
+                }
+            });
+        }
+        ar.sort((a,b) => parseInt(a.key.slice(3,4))-parseInt(b.key.slice(3,4)))
+        return ar;
     };
 
-    componentWillMount() {
-        if (
-            this.state.items &&
-            this.state.items !== undefined &&
-            this.state.items.length > 0
-        ) {
-            let temp = this.state.items.filter(item => item.key === "tag1");
-            if (temp.length > 0) {
-                this.setState({ title: temp[0].value });
-            } else {
-                temp = this.state.items.filter(item => item.key === "tag1");
-                if (temp.length > 0) this.setState({ title: temp[0].value });
-            }
-        }
-    }
-    validateForm() {
-        return this.state.title.length > 0;
-    }
 
     //function to search youtube video
-    searchYoutube(query) {
-        YTSearch({ key: YT_API, term: query }, videos => {
+    searchYoutube() {
+        this.props.clearAllVideoResource(null);
+        let searcyQuery = this.getSearchQuery()
+        console.log("search query is",searcyQuery)
+        YTSearch({ key: YT_API, term: searcyQuery }, videos => {
             videos.map(video => {
                 let url = `https://www.youtube.com/watch?v=${video.id.videoId}`;
                 this.props.onAddResource(url);
@@ -58,28 +54,74 @@ class SemanticModal extends Component {
         });
     }
 
+    //function to create the search query with tag1+tag2+tag3
+    getSearchQuery(){
+        let searchQuery = ""
+        Object.keys(this.props.tags).map(key => {
+            if (key.match("^tag") !== null) {
+                if(key === "tag1" || key === "tag2" || key === "tag3")
+                   searchQuery += this.props.tags[key].trim() + " ";
+            }
+        })
+        return searchQuery
+    }
     createNewBoard(event) {
-        this.searchYoutube(this.state.title);
-        let title = this.state.title;
+        event.preventDefault();
+        this.searchYoutube();
         let data = {};
-        data.title = this.state.title;
-        data.hashKey = this.props.hashkey;
         data.username = this.props.username;
-        this.state.items.map(item => {
-            data[item.key] = item.value;
+        data.pdfCoreLink = this.props.pdfCoreLink;
+        data.pdfCore = this.props.pdfCoreLink;
+        console.log("tags are", this.props.tags);
+        let count = 1;
+        Object.keys(this.props.tags).map(key => {
+            if (key === "hashkey") {
+                data["hashKey"] = this.props.tags[key];
+            } else {
+                if (key.match("^tag") !== null) {
+                    data["tag" + count] = this.props.tags[key];
+                    count++;
+                } else data[key] = this.props.tags[key];
+            }
         });
-        updateSemanticTags(data)
+        updateSemanticTags(data, this.props.isInitial)
             .then(result => {
                 if (result.status === 200) {
                     console.log("successfull");
+                    this.props.onTagUpdate(true);
+                    this.searchYoutube();
                 } else {
                     console.log("status3: " + result);
+                    this.props.onTagUpdate(false);
                 }
             })
             .catch(error => {
                 console.log("status4: " + error);
+                this.props.onTagUpdate(false);
             });
-        event.preventDefault();
+        this.props.toggleIsOk();
+    }
+    saveTags(newTag) {
+        console.log("save the new tags");
+        let tagLength = this.getTags().length + 1;
+        this.props.saveTags({
+            key: "tag" + tagLength,
+            value: newTag
+        });
+    }
+
+    deleteTags(deleteKey) {
+        //console.log("delete the tags at", deleteKey);
+        let ar = {};
+        this.getTags().map(item => {
+            if (item.key !== deleteKey) {
+                ar[item.key] = item.value;
+            }
+        });
+        ar["hashkey"] = this.props.hashkey;
+        console.log("delete the tags ar is", ar);
+        this.searchYoutube();
+        this.props.createNewTag(ar);
     }
     render() {
         const mystyle = {
@@ -96,28 +138,31 @@ class SemanticModal extends Component {
                         method="post"
                         onSubmit={this.createNewBoard.bind(this)}
                     >
-                        {/*<img src="Tags.png" className="imageStyle" alt="SemanticTags" />*/}
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            type="submit"
+                            style={{
+                                position: "absolute",
+                                top: 20,
+                                left: "70%",
+                                width: 40,
+                                height: 40,
+                                borderRadius: 20
+                            }}
+                            onClick={() => this.props.toggleIsOk()}
+                        >
+                            X
+                        </Button>
                         <img src={tag} style={imageStyle} />
 
                         <h2> Recommended Semantic Tags </h2>
 
                         <div className="form-group">
-                            <TextField
-                                id="title"
-                                label="Title"
-                                placeholder="type board title"
-                                name="title"
-                                value={this.state.title}
-                                onChange={this.handleChange}
-                                margin="none"
-                                className="form-control"
-                                style={{ height: "40px" }}
-                            />
-                        </div>
-                        <div className="form-group">
                             <SemanticTags
-                                tags={this.props.tags}
-                                title={this.state.title}
+                                tags={this.getTags()}
+                                saveTags={this.saveTags}
+                                deleteTags={this.deleteTags}
                             />
                         </div>
                         <div className="form-group">
@@ -125,7 +170,7 @@ class SemanticModal extends Component {
                                 variant="contained"
                                 color="primary"
                                 type="submit"
-                                disabled={!this.validateForm()}
+                                disabled={this.state.items.length === 0}
                             >
                                 OK
                             </Button>
@@ -161,11 +206,24 @@ function mapDispatchToProps(dispatch) {
     return {
         onAddResource: url => {
             dispatch(addDemoCard(url));
-        }
+        },
+        saveTags: payload => {
+            dispatch(addNewTag(payload));
+        },
+        createNewTag: payload => {
+            dispatch(saveTags(payload));
+        },
+        clearAllVideoResource: payload => {
+            dispatch(clearAllVideoResource(payload));
+        },
     };
 }
 const mapStateToProps = state => {
-    return { list: state.listDemoCards };
+    return {
+        list: state.listDemoCards,
+        tags: state.tags,
+        isInitial: state.isInitial
+    };
 };
 export default connect(
     mapStateToProps,

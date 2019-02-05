@@ -12,7 +12,11 @@ const CHANGE_PASSWORD = BASE_API_URL + "users/changePassword";
 const VOTE = BASE_API_URL + "votes/create";
 const UPLOAD_PHOTO = BASE_API_URL + "users/uploadPhoto";
 const SEMANTIC_TAGS = BASE_API_URL + "action/tag.do";
-const UPDATE_TITLE = BASE_API_URL + "action/updateTitle.do";
+const UPDATE_TITLE = BASE_API_URL + "action/initialTags.do";
+const SAVE_TITLE = BASE_API_URL + "action/updateTags.do";
+const GET_ANNOTATION = BASE_API_URL + "action/getAnnotation.do";
+const SET_ANNOTATION = BASE_API_URL + "action/setAnnotation.do";
+
 export {
   getLinkPreviewData,
   parseUrlData,
@@ -26,7 +30,9 @@ export {
   voteData,
   uploadPhotoData,
   getSemanticTags,
-  updateSemanticTags
+  updateSemanticTags,
+  getAnnotation,
+  setAnnotation
 };
 
 function getLinkPreviewData(url) {
@@ -258,22 +264,29 @@ function getSemanticTags(pdfCore) {
       return response;
     })
     .catch(error => {
-      console.log("error: " + JSON.stringify(error));
+      console.log("error: " + JSON.stringify(error.response));
+      if (error.response.status === 302) {
+        return error.response;
+      } else if (error.response.status === 503) {
+        return error.response;
+      }
       return error;
     });
 }
 
-function updateSemanticTags(data) {
-  console.log("data to update", data);
-  //debugger;
+function updateSemanticTags(data, isInitial) {
+  console.log("data to update", data, isInitial);
+  debugger;
   let axiosConfig = {
     headers: {
       "Content-Type": "application/json"
       // "Access-Control-Allow-Origin" : "*",
     }
   };
+  const url = isInitial ? UPDATE_TITLE : SAVE_TITLE;
+  if (isInitial) data["pdfCore"] = data["pdfCoreLink"];
   return axios
-    .post(UPDATE_TITLE, data, axiosConfig)
+    .post(url, data, axiosConfig)
     .then(response => {
       console.log("response: " + JSON.stringify(response));
       return response;
@@ -302,6 +315,50 @@ function uploadPhotoData(userId, photo) {
     })
     .catch(error => {
       console.log("error: " + JSON.stringify(error));
+      return error;
+    });
+}
+
+function setAnnotation(payload) {
+  let axiosConfig = {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+  var data = {
+    pdfCore: payload.pdfCore,
+    annotate: JSON.stringify(payload.annotation),
+    };
+  console.log("data to add in annotation",data)
+  return axios
+    .post(SET_ANNOTATION, data, axiosConfig)
+    .then(response => {
+      //console.log("response: " + JSON.stringify(response));
+      return response;
+    })
+    .catch(error => {
+      //console.log("error: " + JSON.stringify(error));
+      return error;
+    });
+}
+
+function getAnnotation(pdfCoreLink) {
+  let axiosConfig = {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+  var data = {
+    pdfCore: pdfCoreLink,
+  };
+  return axios
+    .post(GET_ANNOTATION,data,axiosConfig)
+    .then(response => {
+      //console.log("response: " + JSON.stringify(response));
+      return response;
+    })
+    .catch(error => {
+      //console.log("error: " + JSON.stringify(error));
       return error;
     });
 }

@@ -39,6 +39,7 @@ class SemanticTags extends React.Component {
 
     handleInputKeyDown(evt) {
         if (evt.keyCode === 13) {
+            evt.preventDefault();
             let obj = {};
             const { value } = evt.target;
             obj.value = value;
@@ -47,24 +48,16 @@ class SemanticTags extends React.Component {
                 items: [...state.items, obj],
                 input: " "
             }));
-        }
-
-        if (
-            this.state.items.length &&
-            evt.keyCode === 8 &&
-            !this.state.input.length
-        ) {
-            this.setState(state => ({
-                items: state.items.slice(0, state.items.length - 1)
-            }));
+            this.props.saveTags(value);
         }
     }
 
-    handleRemoveItem(index) {
+    handleRemoveItem(index, item) {
         return () => {
             this.setState(state => ({
                 items: state.items.filter((item, i) => i !== index)
             }));
+            this.props.deleteTags(item.key);
         };
     }
     makeRandomColor(index) {
@@ -121,14 +114,18 @@ class SemanticTags extends React.Component {
                 <ul style={styles.container}>
                     {this.state.items.map(
                         (item, i) =>
-                            item.value !== this.props.title && (
+                             (
                                 <li
                                     key={i}
                                     className={"tag"}
-                                    onClick={this.handleRemoveItem(i)}
                                     style={item.style}
                                 >
-                                    <span> x . </span>
+                                    <span
+                                        onClick={this.handleRemoveItem(i, item)}
+                                    >
+                                        {" "}
+                                        x {" "}
+                                    </span>
                                     {item.value}
                                 </li>
                             )

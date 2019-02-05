@@ -44,7 +44,6 @@ class ResourceCard extends Component {
         this.state = {
             previewLinkData: "",
             isUrlDataFetched: false,
-            title: "",
             disc: "",
             imgURL: "",
             url: props.url,
@@ -80,7 +79,6 @@ class ResourceCard extends Component {
                 else {
                     this.setState({
                         previewLinkData: " -- ",
-                        title: "no title",
                         disc: "no description",
                         url: "error in url",
                         isUrlDataFetched: true,
@@ -91,7 +89,6 @@ class ResourceCard extends Component {
 
                 this.setState({
                     previewLinkData: " -- ",
-                    title: "no title",
                     disc: "no description",
                     url: "error in url",
                     isUrlDataFetched: true,

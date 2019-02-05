@@ -14,7 +14,7 @@ const updateHash = highlight => {
   window.location.hash = `highlight-${highlight.id}`;
 };
 
-const AnnotateSidebar = props => {
+const   AnnotateSidebar = props => {
   const { highlights, resetHighlights } = props;
   return (
     <div className="sidebar" style={{ width: "30vw" }}>
@@ -22,8 +22,7 @@ const AnnotateSidebar = props => {
         <p style={{ fontSize: "0.6rem" }} />
         <p>
           <small>
-            To create area highlight hold ⌥ Option key (Alt), then click and
-            drag.
+            To create area highlight hold ⌥ Option key (Alt), then click and drag.
           </small>
         </p>
       </div>
@@ -34,15 +33,15 @@ const AnnotateSidebar = props => {
             highlight={highlight}
             onClickReply={props.onClickReply}
             isReply={props.isReply}
-            url={props.url}
+            username={props.username}
           />
         ))}
       </ul>
       {highlights.length > 0 ? (
         <div style={{ padding: "1rem" }}>
-          <a href="##" onClick={resetHighlights}>
-            Reset highlights
-          </a>
+          {/*<a href="##" onClick={resetHighlights}>*/}
+            {/*Reset highlights*/}
+          {/*</a>*/}
         </div>
       ) : null}
     </div>

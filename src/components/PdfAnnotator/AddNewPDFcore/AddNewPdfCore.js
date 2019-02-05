@@ -23,18 +23,18 @@ class AddNewPdfCore extends Component {
     };
   }
   getTag(event) {
-    this.setState({
-      isRequesting: true
-    });
+    this.props.setIsLoadingTagsStatus(true, "");
     getSemanticTags(this.state.PDFcoreLink)
       .then(result => {
         console.log("status1: " + JSON.stringify(result));
-        this.props.callbackFromParent(this.state.PDFcoreLink, result.data);
+        this.props.addTagsToCoreLink(result);
+        this.props.setIsLoadingTagsStatus(false, "Tags Loaded Succesfully");
       })
       .catch(error => {
-        this.props.callbackFromParent(this.state.PDFcoreLink, null);
-        console.log("status4: " + error);
+        this.props.addTagsToCoreLink(null);
+        this.props.setIsLoadingTagsStatus(false, "unable To Load Tags");
       });
+    this.props.callbackFromParent(this.state.PDFcoreLink);
     event.preventDefault();
   }
 
@@ -42,16 +42,17 @@ class AddNewPdfCore extends Component {
     var res = userInput.match(
       /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_.~#?&//=]*)/g
     );
+    return res != null;
     /**
      *
      * Check whether the input file is PDF ? sent the link to SALMON-API
      *
      *
      **/
-    var ext = userInput.substring(userInput.lastIndexOf(".") + 1);
-    if (ext == "pdf") {
-      return res != null;
-    }
+    // var ext = userInput.substring(userInput.lastIndexOf(".") + 1);
+    // if (ext == "pdf") {
+    //   return res != null;
+    //}
   }
 
   validateForm() {
