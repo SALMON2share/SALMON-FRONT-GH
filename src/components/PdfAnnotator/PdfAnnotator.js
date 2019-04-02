@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import YTSearch from "youtube-api-search";
 import URLSearchParams from "url-search-params";
-import MediaQuery from 'react-responsive';
+import MediaQuery from "react-responsive";
 import type, { T_Highlight, T_NewHighlight } from "react-pdf-highlighter";
 import {
   AreaHighlight,
@@ -20,7 +20,8 @@ import {
   createNewBoardData,
   getSemanticTags,
   getAnnotation,
-  setAnnotation
+  setAnnotation,
+  updateSemanticTags
 } from "../../utils/Connection";
 import axios from "axios";
 import Header from "../Header/Header";
@@ -36,7 +37,8 @@ import {
   clearAllVideoResource,
   saveHighlights,
   saveTagApiType,
-  addTestHighlightUrl
+  addTestHighlightUrl,
+  saveSelectedCollection
 } from "../../actions";
 import Snackbar from "@material-ui/core/Snackbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -102,12 +104,14 @@ class PdfAnnotator extends Component<Props, State> {
     this.getAllHighlights = this.getAllHighlights.bind(this);
     this.handleResponseFromTags = this.handleResponseFromTags.bind(this);
     this.onTagUpdate = this.onTagUpdate.bind(this);
+    this.onDemoCardChange = this.onDemoCardChange.bind(this);
   }
 
   toggleIsOk = () => {
     this.setState({ isOkPressed: !this.state.isOkPressed });
   };
   setIsLoadingTagsStatus = (status, statusMessage) => {
+    ////console.log("setting the tags status");
     this.setState({
       isLoadingTags: status,
       tagsLoadedMessage: statusMessage
@@ -126,7 +130,7 @@ class PdfAnnotator extends Component<Props, State> {
   };
 
   closeModal = () => {
-    console.log("close the modal");
+    //console.log("close the modal");
     this.setState({
       modalIsOpen: false,
       PdfzIndex: "zIndexDefault",
@@ -168,21 +172,25 @@ class PdfAnnotator extends Component<Props, State> {
     return result;
   };
   componentWillMount() {
-    console.log("cookies are", this.props.cookies);
+    //console.log("cookies are", this.props.cookies);
+    if (this.props.tags !== null) {
+      this.setState({ isLoadingTags: false });
+    }
     if (this.props.cookies.get("username") === undefined) {
       this.props.history.push("/Login");
     } else {
       this.props.addTestHighlightUrl(this.props.pdfURL);
+      //this.props.saveSelectedCollection(null);
       getSemanticTags(this.props.pdfURL)
         .then(result => {
-          console.log("result for tag is" + JSON.stringify(result));
+          //console.log("result for tag is" + JSON.stringify(result));
           this.handleResponseFromTags(result);
         })
         .catch(error => {
-          console.log("status4: " + error);
+          //console.log("status4: " + error);
           this.setIsLoadingTagsStatus(false, "unable To Load Tags");
         });
-      this.getAllHighlights(true);
+      this.getAllHighlights(this.props.pdfURL, true);
     }
   }
 
@@ -195,6 +203,10 @@ class PdfAnnotator extends Component<Props, State> {
       switch (result.status) {
         case 200: //case for new hashkey
           let data = this.handleTags(result.data);
+          data["pdfCoreLink"] = this.props.pdfURL;
+          data["hashKey"] = data["hashkey"];
+          data["username"] = this.props.cookies.get("username");
+          //updateSemanticTags(data, true);
           this.props.saveTags(data);
           this.props.saveTagApiType(true);
           this.setIsLoadingTagsStatus(false, "Tags Loaded Succesfully");
@@ -212,7 +224,14 @@ class PdfAnnotator extends Component<Props, State> {
           this.props.saveTags(data);
           this.props.saveTagApiType(false);
           this.setIsLoadingTagsStatus(false, "Tags Loaded Succesfully");
-          alert("this pdf is stored with hashkey of "+result.data.hashkey+" and the user "+result.data.user.trim()+" in date "+result.data.date.trim());
+          alert(
+            "this pdf is stored with hashkey of " +
+              result.data.hashkey +
+              " and the user " +
+              result.data.user.trim() +
+              " in date " +
+              result.data.date.trim()
+          );
           break;
         default:
           //case if no tags are found
@@ -241,22 +260,22 @@ class PdfAnnotator extends Component<Props, State> {
   /**
    * fetch all highlights
    */
-  getAllHighlights(addToStore = false) {
-    getAnnotation(this.props.pdfURL)
+  getAllHighlights(pdfCore, addToStore = false) {
+    getAnnotation(pdfCore)
       .then(result => {
-        console.log("annotation are" + result);
-        // if(addToStore && result && result.data && result.data.length > 0){
-        //   result.data.map(item => {
-        //     let comment = JSON.parse(item.comment)
-        //     let position = JSON.parse(item.position)
-        //     let reply = JSON.parse(item.reply)
-        //     console.log("sending data",comment,position,reply)
-        //     this.addHighlightAtMount(comment,position,reply)
-        //   })
-        // }
+        if (
+          addToStore &&
+          result &&
+          result.data &&
+          result.data.pdfCore === pdfCore
+        ) {
+          let listOfHighlights = JSON.parse(result.data.annotate);
+          this.addHighlightAtMount(listOfHighlights);
+        }
+        this.forceUpdate();
       })
       .catch(error => {
-        console.log("error in annotation " + error);
+        //console.log("error in annotation " + error);
       });
   }
 
@@ -264,14 +283,12 @@ class PdfAnnotator extends Component<Props, State> {
    * set new Highlights
    */
   setNewHighlights(payload) {
+    //console.log("payload is", payload);
     setAnnotation(payload)
       .then(result => {
-        //console.log("status1: " + JSON.stringify(result));
-        this.getAllHighlights();
+        this.getAllHighlights(payload.pdfCore);
       })
-      .catch(error => {
-        //console.log("status4: " + error);
-      });
+      .catch(error => {});
   }
   //when component recev tags, this lifecycle method will fetch the youtube videos
   shouldComponentUpdate(props, state) {
@@ -286,7 +303,9 @@ class PdfAnnotator extends Component<Props, State> {
       props.testHighlights !== this.props.testHighlights
     ) {
       this.setState({ highlights: [...props.testHighlights[props.pdfURL]] });
+      //whenever the highlights changed locally update it also on the server
     }
+
     return true;
   }
 
@@ -308,13 +327,13 @@ class PdfAnnotator extends Component<Props, State> {
   addHighlight(highlight) {
     const { highlights } = this.state;
 
-    console.log("Saving highlight", highlight);
+    //console.log("Saving highlight", highlight);
     let temp = [{ ...highlight, id: getNextId(), reply: [] }, ...highlights];
     this.setState({
       highlights: temp
     });
-     this.setNewHighlights({
-      annotation:temp,
+    this.setNewHighlights({
+      annotation: temp,
       pdfCore: this.props.pdfURL
     });
     this.props.saveHighlights({
@@ -323,16 +342,10 @@ class PdfAnnotator extends Component<Props, State> {
     });
   }
 
-  addHighlightAtMount(comment,position,reply){
-    let highlight = {}
-    let content = {text:""}
-    highlight.comment = comment
-    highlight.position = position
-    highlight.reply = reply
-    highlight.content = content
-    console.log("highlights is",highlight)
-    const { highlights } = this.state;
-    let temp = [{ ...highlight, id: getNextId() }, ...highlights];
+  addHighlightAtMount(highlights) {
+    let temp = this.state.highlights.slice();
+    temp = temp.concat(highlights);
+    //console.log("temp is", temp);
     this.setState({
       highlights: temp
     });
@@ -343,7 +356,7 @@ class PdfAnnotator extends Component<Props, State> {
   }
 
   updateHighlight(highlightId, position, content) {
-    console.log("Updating highlight", highlightId, position, content);
+    //console.log("Updating highlight", highlightId, position, content);
 
     this.setState({
       highlights: this.state.highlights.map(h => {
@@ -362,9 +375,10 @@ class PdfAnnotator extends Component<Props, State> {
     let url_link = pdfURL;
     this.props.saveURL(pdfURL);
     this.props.addTestHighlightUrl(pdfURL);
+    this.props.saveSelectedCollection(null);
     this.setState({ isOpenTag: true });
     this.props.clearAllVideoResource(null);
-    this.getAllHighlights(true)
+    this.getAllHighlights(pdfURL, true);
     this.setState({
       modalIsOpen: false,
       PdfzIndex: "zIndexDefault",
@@ -377,6 +391,21 @@ class PdfAnnotator extends Component<Props, State> {
     this.handleResponseFromTags(result);
   };
 
+  getRecommendedQueryForYoutube = () => {
+    let query = "";
+    let max = 0;
+    let min = 0;
+    if (this.props.tags !== null && this.props.tags !== undefined) {
+      Object.keys(this.props.tags).map(key => {
+        if (key.match("^tag") !== null) {
+          max++;
+        }
+      });
+      let random = parseInt(Math.random() * (+max - +min) + +min);
+      query = this.props.tags["tag" + random];
+    }
+    return query !== undefined ? query.trim() : "";
+  };
   handleMe = url_link => {
     if (url_link == "") return;
     axios({ url: url_link, method: "GET", responseType: "blob" })
@@ -392,15 +421,14 @@ class PdfAnnotator extends Component<Props, State> {
         })
           .then(res => {
             if (/pdf/.test(url_link)) {
-              console.log("response is",res)
-              if(res.headers["content-type"].match("^text/html")){
-                alert("this is unsafe pdf")
-              }else{
+              //console.log("response is", res);
+              if (res.headers["content-type"].match("^text/html")) {
+                alert("this is unsafe pdf");
+              } else {
                 var blob_url = URL.createObjectURL(res.data);
-              this.setState({ default_link: true, new_url: blob_url });
-              this.props.saveURL(blob_url);
+                this.setState({ default_link: true, new_url: blob_url });
+                this.props.saveURL(url_link);
               }
-
             } else {
               var blob = new Blob([res.data], { type: "text/html" });
               var blob_url = URL.createObjectURL(blob);
@@ -408,13 +436,15 @@ class PdfAnnotator extends Component<Props, State> {
                 "#myiframe"
               ).src = blob_url);
               var new_url = blob_url.split("blob:");
-              console.log(new_url);
+              //console.log(new_url);
               this.setState({ url: new_url[1], default_link: false });
-              this.props.saveURL(new_url[1]);
+              this.props.saveURL(url_link);
             }
           })
           .catch(e => {
-            alert("Sorry, we are unable to add this pdf, please try different pdf")
+            alert(
+              "Sorry, we are unable to add this pdf, please try different pdf"
+            );
           });
       });
   };
@@ -427,7 +457,7 @@ class PdfAnnotator extends Component<Props, State> {
   };
 
   onClickModalOpen = () => {
-    console.log("on click modal open was clicked");
+    //console.log("on click modal open was clicked");
     this.setState({ PdfzIndex: "zIndexChanged" });
   };
   getTags = () => {
@@ -440,6 +470,99 @@ class PdfAnnotator extends Component<Props, State> {
       });
     }
     return ar;
+  };
+
+  onDemoCardChange = () => {
+    //console.log("demo card has updated", this.state.highlights);
+    this.setNewHighlights({
+      annotation: this.state.highlights,
+      pdfCore: this.props.pdfURL
+    });
+  };
+
+  renderPdfLoader = highlights => {
+    try {
+      return (
+        <PdfLoader url={this.state.new_url} beforeLoad={<Spinner />}>
+          {pdfDocument => (
+            <PdfHighlighter
+              pdfDocument={pdfDocument}
+              enableAreaSelection={event => event.altKey}
+              onScrollChange={resetHash}
+              scrollRef={scrollTo => {
+                this.scrollViewerTo = scrollTo;
+
+                this.scrollToHighlightFromHash();
+              }}
+              onSelectionFinished={(
+                position,
+                content,
+                hideTipAndSelection,
+                transformSelection
+              ) => (
+                <Tip
+                  onOpen={transformSelection}
+                  onConfirm={comment => {
+                    this.addHighlight({ content, position, comment });
+
+                    hideTipAndSelection();
+                  }}
+                />
+              )}
+              highlightTransform={(
+                highlight,
+                index,
+                setTip,
+                hideTip,
+                viewportToScaled,
+                screenshot,
+                isScrolledTo
+              ) => {
+                const isTextHighlight = !Boolean(
+                  highlight.content && highlight.content.image
+                );
+
+                const component = isTextHighlight ? (
+                  <Highlight
+                    isScrolledTo={isScrolledTo}
+                    position={highlight.position}
+                    comment={highlight.comment}
+                  />
+                ) : (
+                  <AreaHighlight
+                    highlight={highlight}
+                    onChange={boundingRect => {
+                      this.updateHighlight(
+                        highlight.id,
+                        {
+                          boundingRect: viewportToScaled(boundingRect)
+                        },
+                        { image: screenshot(boundingRect) }
+                      );
+                    }}
+                  />
+                );
+
+                return (
+                  <Popup
+                    popupContent={<HighlightPopup {...highlight} />}
+                    onMouseOver={popupContent =>
+                      setTip(highlight, highlight => popupContent)
+                    }
+                    onMouseOut={hideTip}
+                    key={index}
+                    children={component}
+                  />
+                );
+              }}
+              highlights={highlights}
+            />
+          )}
+        </PdfLoader>
+      );
+    } catch (error) {
+      console.log("error is", error);
+    }
   };
   render() {
     const fab = {
@@ -475,7 +598,6 @@ class PdfAnnotator extends Component<Props, State> {
     };
 
     const isdefault = this.state.default_link;
-    console.log("props in annotate card", this.props);
     return (
       <div className="App" style={{ display: "flex", height: "100vh" }}>
         <Header toggleSidebar={() => this.onSetSidebarOpen()} />
@@ -508,6 +630,7 @@ class PdfAnnotator extends Component<Props, State> {
             toggleSidebar={() => this.onSetSidebarOpen()}
             onClickModalOpen={() => this.onClickModalOpen()}
             closeModal={() => this.closeModal()}
+            recommendedQuery={this.getRecommendedQueryForYoutube()}
           />
         )}
         {/*<SemanticModal/>*/}
@@ -520,6 +643,7 @@ class PdfAnnotator extends Component<Props, State> {
             url={this.props.pdfURL}
             resetHighlights={this.resetHighlights}
             username={this.props.cookies.get("username")}
+            onDemoCardChange={this.onDemoCardChange}
           />
         </MediaQuery>
 
@@ -606,80 +730,7 @@ class PdfAnnotator extends Component<Props, State> {
                 </Button>
               </div>
             )}
-            <PdfLoader url={this.state.new_url} beforeLoad={<Spinner />}>
-              {pdfDocument => (
-                <PdfHighlighter
-                  pdfDocument={pdfDocument}
-                  enableAreaSelection={event => event.altKey}
-                  onScrollChange={resetHash}
-                  scrollRef={scrollTo => {
-                    this.scrollViewerTo = scrollTo;
-
-                    this.scrollToHighlightFromHash();
-                  }}
-                  onSelectionFinished={(
-                    position,
-                    content,
-                    hideTipAndSelection,
-                    transformSelection
-                  ) => (
-                    <Tip
-                      onOpen={transformSelection}
-                      onConfirm={comment => {
-                        this.addHighlight({ content, position, comment });
-
-                        hideTipAndSelection();
-                      }}
-                    />
-                  )}
-                  highlightTransform={(
-                    highlight,
-                    index,
-                    setTip,
-                    hideTip,
-                    viewportToScaled,
-                    screenshot,
-                    isScrolledTo
-                  ) => {
-                    const isTextHighlight = !Boolean(
-                      highlight.content && highlight.content.image
-                    );
-
-                    const component = isTextHighlight ? (
-                      <Highlight
-                        isScrolledTo={isScrolledTo}
-                        position={highlight.position}
-                        comment={highlight.comment}
-                      />
-                    ) : (
-                      <AreaHighlight
-                        highlight={highlight}
-                        onChange={boundingRect => {
-                          this.updateHighlight(
-                            highlight.id,
-                            { boundingRect: viewportToScaled(boundingRect) },
-                            { image: screenshot(boundingRect) }
-                          );
-                        }}
-                      />
-                    );
-
-                    return (
-                      <Popup
-                        popupContent={<HighlightPopup {...highlight} />}
-                        onMouseOver={popupContent =>
-                          setTip(highlight, highlight => popupContent)
-                        }
-                        onMouseOut={hideTip}
-                        key={index}
-                        children={component}
-                      />
-                    );
-                  }}
-                  highlights={highlights}
-                />
-              )}
-            </PdfLoader>
+            {this.renderPdfLoader(highlights)}
           </div>
         ) : (
           <iframe style={framed} id="myiframe" src="about:blank" />
@@ -694,7 +745,8 @@ function mapStateToProps(state) {
     pdfURL: state.pdfURL,
     tags: state.tags,
     cookies: state.cookies,
-    isInitial: state.isInitial
+    isInitial: state.isInitial,
+    selectedCollection: state.selectedCollection
   };
 }
 
@@ -720,6 +772,9 @@ function mapDispatchToProps(dispatch) {
     },
     addTestHighlightUrl: payload => {
       dispatch(addTestHighlightUrl(payload));
+    },
+    saveSelectedCollection: payload => {
+      dispatch(saveSelectedCollection(payload));
     }
   };
 }

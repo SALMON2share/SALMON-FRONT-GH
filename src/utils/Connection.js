@@ -16,7 +16,8 @@ const UPDATE_TITLE = BASE_API_URL + "action/initialTags.do";
 const SAVE_TITLE = BASE_API_URL + "action/updateTags.do";
 const GET_ANNOTATION = BASE_API_URL + "action/getAnnotation.do";
 const SET_ANNOTATION = BASE_API_URL + "action/setAnnotation.do";
-
+const GET_COLLECTION = BASE_API_URL + "action/getCollections.do";
+const RELEVANT_COLLECTION = BASE_API_URL + "action/relevantCard.do";
 export {
   getLinkPreviewData,
   parseUrlData,
@@ -32,7 +33,9 @@ export {
   getSemanticTags,
   updateSemanticTags,
   getAnnotation,
-  setAnnotation
+  setAnnotation,
+  getCollections,
+  setRelevantCollection
 };
 
 function getLinkPreviewData(url) {
@@ -276,7 +279,7 @@ function getSemanticTags(pdfCore) {
 
 function updateSemanticTags(data, isInitial) {
   console.log("data to update", data, isInitial);
-  debugger;
+  //debugger;
   let axiosConfig = {
     headers: {
       "Content-Type": "application/json"
@@ -327,9 +330,9 @@ function setAnnotation(payload) {
   };
   var data = {
     pdfCore: payload.pdfCore,
-    annotate: JSON.stringify(payload.annotation),
-    };
-  console.log("data to add in annotation",data)
+    annotate: JSON.stringify(payload.annotation)
+  };
+  console.log("data to add in annotation", data);
   return axios
     .post(SET_ANNOTATION, data, axiosConfig)
     .then(response => {
@@ -349,12 +352,62 @@ function getAnnotation(pdfCoreLink) {
     }
   };
   var data = {
-    pdfCore: pdfCoreLink,
+    pdfCore: pdfCoreLink
   };
   return axios
-    .post(GET_ANNOTATION,data,axiosConfig)
+    .post(GET_ANNOTATION, data, axiosConfig)
     .then(response => {
       //console.log("response: " + JSON.stringify(response));
+      return response;
+    })
+    .catch(error => {
+      //console.log("error: " + JSON.stringify(error));
+      return error;
+    });
+}
+
+/**
+ * function to fetch all the availabe collections
+ */
+
+function getCollections(pdfCore) {
+  //debugger;
+  let axiosConfig = {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+  return axios
+    .get(GET_COLLECTION)
+    .then(response => {
+      console.log("response: " + JSON.stringify(response.data));
+      return response;
+    })
+    .catch(error => {
+      console.log("error: " + JSON.stringify(error.response));
+      if (error.response.status === 302) {
+        return error.response;
+      } else if (error.response.status === 503) {
+        return error.response;
+      }
+      return error;
+    });
+}
+
+function setRelevantCollection(params) {
+  let axiosConfig = {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+  var data = {
+    id: params.id,
+    relevant: params.relevant
+  };
+  return axios
+    .post(RELEVANT_COLLECTION, data, axiosConfig)
+    .then(response => {
+      console.log("response: " + JSON.stringify(response));
       return response;
     })
     .catch(error => {

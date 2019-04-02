@@ -144,7 +144,6 @@ class ResourceCard extends Component {
     if (finalImageURL == null) {
       finalImageURL = NoImagePreview;
     }
-    console.log("info==>", this.state);
     return (
       <div className="m-2 col-centered">
         {this.state.isUrlDataFetched ? (

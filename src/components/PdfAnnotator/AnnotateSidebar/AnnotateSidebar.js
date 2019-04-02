@@ -34,6 +34,7 @@ const   AnnotateSidebar = props => {
             onClickReply={props.onClickReply}
             isReply={props.isReply}
             username={props.username}
+            onDemoCardChange={props.onDemoCardChange}
           />
         ))}
       </ul>

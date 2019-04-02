@@ -39,7 +39,7 @@ class YT_API_CORE extends Component {
       });
       this.setState({
         videos: videos,
-        selectedVideo: videos[0]
+        //selectedVideo: videos[0]
       });
     });
   }

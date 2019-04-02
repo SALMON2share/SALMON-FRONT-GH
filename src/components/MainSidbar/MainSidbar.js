@@ -50,7 +50,7 @@ class MainSidbar extends React.Component {
     opacity: 0,
     visibility: "hidden",
     transition: "opacity .3s ease-out, visibility .3s ease-out",
-    backgroundColor: "rgba(0,0,0,.3)"
+    backgroundColor: "rgb(31, 60, 80)"
   };
   dragHandle: {
     zIndex: 1,
@@ -71,11 +71,12 @@ class MainSidbar extends React.Component {
             <DemoCards
               onClickModalOpen={() => this.props.onClickModalOpen()}
               closeModal={() => this.props.closeModal()}
+              recommendedQuery={this.props.recommendedQuery}
             />
           }
           open={this.props.sidebarOpen && this.state.sidebarOpen}
           onSetOpen={this.onSetSidebarOpen}
-          styles={{ sidebar: { background: "#69b5ff", width: "430px" } }}
+          styles={{ sidebar: { background: "#1a374b", width: "430px" } }}
           pullRight={true}
         >
           <Header

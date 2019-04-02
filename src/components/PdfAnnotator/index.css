@@ -11,11 +11,7 @@ body {
   overflow: auto;
   color: rgb(55, 58, 55);
   background: linear-gradient(
-    rgb(249, 248, 247),
-    rgb(251, 250, 248) 46px,
-    rgb(251, 251, 249) 120px,
-    rgb(248, 247, 245) 35%,
-    rgb(249, 248, 246)
+          rgb(109, 107, 106), #99bee6 46px, rgb(240, 240, 240) 120px, #c2dfff 35%, rgb(249, 248, 246)
   );
 }
 

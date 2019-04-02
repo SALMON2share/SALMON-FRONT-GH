@@ -14,7 +14,9 @@ const initialState = {
   testHighlights: null,
   pdfURL: "https://arxiv.org/pdf/cs/0408001.pdf",
   tags: null,
-  isInitial: null
+  isInitial: null,
+  collections: null,
+  selectedCollection: null
 };
 /**
  * function to sort the resources
@@ -91,7 +93,11 @@ const rootReducer = (state = initialState, action) => {
         listDemoCards: result
       };
     case "SAVE_REPLY":
-    console.log("url in save reply",action.payload.url,state.testHighlights)
+      console.log(
+        "url in save reply",
+        action.payload.url,
+        state.testHighlights
+      );
       let highlightsTemp = state.testHighlights[action.payload.url].slice();
       index = highlightsTemp.findIndex(row => row.id === action.payload.id);
       highlightsTemp[index].reply.push(action.payload.reply);
@@ -161,6 +167,16 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         testHighlights: obj
+      };
+    case "SAVE_COLLECTIONS":
+      return {
+        ...state,
+        collections: action.payload
+      };
+    case "SAVE_SELECTED_COLLECTION":
+      return {
+        ...state,
+        selectedCollection: action.payload
       };
     default:
       return state;

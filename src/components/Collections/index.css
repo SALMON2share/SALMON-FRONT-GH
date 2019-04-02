@@ -4,15 +4,20 @@
 
 .TesxtStyle{
     color: #373a37;
+    font-family: Arial;
+    margin-top: 51px;
+    padding-top: 10px;
 }
 
 
 .TagListsstyleHeader{
     color: #fbfbff;
-    height: 140px;
+    height: 200px;
     overflow: auto;
     width: 340px;
-    background-color: #0c5460;
+    background-color: #6c7475;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
 }
 .Title2Style{
     margin-bottom: 0px;
@@ -21,7 +26,9 @@
     overflow: auto;
     width: 340px;
     margin-top: 51px;
-    background-color: #3197ff;
+    background-color: #325d8c;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
 }
 
 /*.Order {*/
@@ -41,7 +48,7 @@
     margin-top: 12px;
     margin-right: 48px;
     background-color: #9cb4b1;
-    border-radius: 22px;
+    border-radius: 8px;
     /* background-position: left top; */
     background-repeat: inherit;
     padding: 16px;

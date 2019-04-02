@@ -60,3 +60,12 @@ export const addTestHighlightUrl = payload => ({
   type: "ADD_HIGHLIGHT_URL",
   payload
 });
+//function to save Collections
+export const saveCollections = payload => ({
+  type: "SAVE_COLLECTIONS",
+  payload
+});
+export const saveSelectedCollection = payload => ({
+  type: "SAVE_SELECTED_COLLECTION",
+  payload
+});
