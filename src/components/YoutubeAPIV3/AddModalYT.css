@@ -1,0 +1,36 @@
+.button {
+  position: absolute;
+  top: 0px;
+  right: 15px;
+  height: 60px;
+  width: 60px;
+  border-radius: 30px;
+  background-color: #063665;
+  display: "flex";
+  justify-content: "center";
+  align-items: "center";
+  color: #fff;
+  font-size: 200%;
+}
+.button:hover {
+  position: absolute;
+  top: 0;
+  right: 20px;
+  height: 60px;
+  width: 60px;
+  border-radius: 30px;
+  background-color: #fff;
+  display: "flex";
+  justify-content: "center";
+  align-items: "center";
+  color: #063665;
+  font-size: 200%;
+}
+.modal {
+  margin-left: "25%";
+  margin-top: "5%";
+  height: "50%";
+  width: "50%";
+  background-color: "transparent";
+  border-width: 0;
+}

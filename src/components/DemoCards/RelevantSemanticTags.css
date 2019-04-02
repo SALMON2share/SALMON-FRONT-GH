@@ -1,0 +1,147 @@
+#title {
+  font: bold 20pt "Trebuchet MS";
+  text-align: center;
+  color: #059bff;
+  letter-spacing: -2px;
+}
+#title span {
+  font-weight: normal;
+  color: #bbb;
+}
+
+#collectiontag {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  box-shadow: 1px 1px 4px #ccc inset;
+  padding: 10px;
+  width: 50%;
+  background: #fafafa;
+  margin: auto;
+}
+
+#collectiontag-typer {
+  outline: none;
+  border: none;
+  padding: 10px;
+  margin: 6px;
+  margin-right: -25px;
+  width: 100px;
+  background-color: transparent;
+  font-size: 5px;
+  color: #333;
+}
+.collectiontag {
+  display: inline-block;
+  background: #f95;
+  color: #fff;
+  padding: 5px 10px;
+  margin: 5px 2px 2px 20px;
+  font: normal 20px sans-serif;
+  position: relative;
+  cursor: default;
+  box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.2);
+  -webkit-transform-origin: 0% 50%;
+  -webkit-animation: swing 1s;
+  -o-animation: swing 1s;
+  animation: swing 1s;
+  border-radius: 2px;
+}
+
+.collectiontag:before {
+  content: "";
+  position: absolute;
+  width: 0;
+  background: inherit;
+  height: 31px;
+  border: 10px solid #6c7475;
+  border-right-color: transparent;
+  -webkit-border-radius: 10px 0 0 10px;
+  -moz-border-radius: 10px 0 0 10px;
+  border-radius: 10px 0 0 10px;
+  left: -19px;
+  color-rendering: optimizeQuality;
+  top: 0;
+}
+
+.collectiontag:after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background: #fff;
+  position: absolute;
+  left: -3px;
+  top: 12px;
+  box-shadow: inset 1px 1px 0 #ccc;
+}
+
+.collectiontag .close {
+  position: absolute;
+  background: inherit;
+  left: -4px;
+  z-index: 3;
+  visibility: hidden;
+}
+
+.collectiontag:hover .close {
+  visibility: visible;
+}
+
+.collectiontag:hover {
+  color: rgba(238, 250, 70, 0.5);
+}
+
+.colors {
+  list-style: none;
+}
+.colors li {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+}
+
+/* Chrome, Safari, Opera */
+@-webkit-keyframes swing {
+  0% {
+    -webkit-transform: rotate(100deg);
+  }
+  25% {
+    -webkit-transform: rotate(-25deg);
+  }
+  50% {
+    -webkit-transform: rotate(15deg);
+  }
+  100% {
+    -webkit-transform: rotate(0deg);
+  }
+}
+
+@keyframes swing {
+  0% {
+    -webkit-transform: rotate(-200);
+  }
+  25% {
+    -webkit-transform: rotate(-70);
+  }
+  50% {
+    -webkit-transform: rotate(-185);
+  }
+  100% {
+    -webkit-transform: rotate(-180);
+  }
+}
+
+.semantic-tags {
+  background-color: #000;
+  width: 350px;
+  display: flex;
+  height: 300px;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  overflow: scroll;
+}
