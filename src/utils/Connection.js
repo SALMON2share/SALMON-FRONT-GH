@@ -1,4 +1,5 @@
 import axios from "axios";
+//import Mercury from '@postlight/mercury-parser';
 import StorageKeys from "./StorageKeys";
 const LINK_PREVIEW =
   "http://api.linkpreview.net/?key=5b34416685a7ce81e7408aa64be981a91c4c742b33c57&q=";
@@ -18,6 +19,7 @@ const GET_ANNOTATION = BASE_API_URL + "action/getAnnotation.do";
 const SET_ANNOTATION = BASE_API_URL + "action/setAnnotation.do";
 const GET_COLLECTION = BASE_API_URL + "action/getCollections.do";
 const RELEVANT_COLLECTION = BASE_API_URL + "action/relevantCard.do";
+
 export {
   getLinkPreviewData,
   parseUrlData,
@@ -35,7 +37,8 @@ export {
   getAnnotation,
   setAnnotation,
   getCollections,
-  setRelevantCollection
+  setRelevantCollection,
+  checkValidUrlLink
 };
 
 function getLinkPreviewData(url) {
@@ -60,8 +63,7 @@ function parseUrlData(url) {
       //'x-api-key': 'BaQ58I3piLMBRrPx2WBFMMASMx65XwxI1wqYIGtc'
     }
   };
-  return axios
-    .get("https://mercury.postlight.com/parser?url=" + url, axiosConfig)
+  return axios.get("https://mercury.postlight.com/parser?url=" + url, axiosConfig)
     .then(response => {
       console.log("response: " + JSON.stringify(response));
       return response;
@@ -413,5 +415,34 @@ function setRelevantCollection(params) {
     .catch(error => {
       //console.log("error: " + JSON.stringify(error));
       return error;
+    });
+}
+
+function checkValidUrlLink(url_link) {
+  return axios({ url: url_link, method: "GET", responseType: "blob" })
+    .then(res => {
+      console.log("it is valid");
+      return { isValid: true };
+    })
+    .catch(e => {
+      axios({
+        url: "https://cors-anywhere.herokuapp.com/" + url_link,
+        method: "GET",
+        responseType: "blob",
+        headers: { Origin: url_link }
+      })
+        .then(res => {
+          if (/pdf/.test(url_link)) {
+            //console.log("response is", res);
+            if (res.headers["content-type"].match("^text/html")) {
+              return { isValid: false };
+            } else {
+              return { isValid: true };
+            }
+          }
+        })
+        .catch(e => {
+          return { isValid: false };
+        });
     });
 }
