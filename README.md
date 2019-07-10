@@ -12,7 +12,7 @@ the front end is written in Javascript/ CSS/ HTML languages the frame works whic
 * REDUX status manager 
 * Bootstrap for scalable cards and styles
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](https://www.youtube.com/watch?v=YOUTUBE_VIDEO_ID_HERE)
+![Screenshot 2019-07-10 at 11 49 53](https://user-images.githubusercontent.com/17232450/60959668-e9dab080-a308-11e9-9bb4-7364d24ae192.png)
 
 ## project requirements :
 * React JS
