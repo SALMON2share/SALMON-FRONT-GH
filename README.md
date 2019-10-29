@@ -20,37 +20,6 @@ the front end is written in Javascript/ CSS/ HTML languages the frame works whic
 * Redux
 * Axios
 
-
-## Table of contents
-
-   * [1. SALMON FRONT REACT ](#Salmon)
-   
-        * [1.1 REACT](#REACT)
-        * [1.2 REDUX: ](#REDUX)
-        * [1.3 FLOW](#3.FLOW)
-   * [2. Architector](#Architector)
-        
-   * [3. HowToRunSALMON-FRONT](#HowToRun)
-   
-       * [2.1Setup And Requirements ForBackend REST-API Connection](#SetupAndRequirementsForBackend)
-                
-            * [NODE VERSION](#CurrentJDK)
-            * [Tools](#Tools) 
-            * [Installation](#installation)
-            * [Install Apache Tomcat](#InstallApacheTomcat)
-            * [Combo](#combo)
-            * [Auto insert and update TOC](#auto-insert-and-update-toc)
-             
-       * [2.2 SALMON-CONTROLLER](#tests)
-       * [2.3 SALMON-API](#dependency)
-       
-   * [4. Tutorials ](#Tutorials)
-   
-       * [3.1 initial terminal commands for psql](#InitialTerminalCommandsForpPsql)
-       
-   * [Dependency](#dependency)
-
-
 ## HowToRun
 
  - Make sure that you put MVC in the proper folder.
