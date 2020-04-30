@@ -12,7 +12,7 @@
     "axios": "^0.18.0",
     "emoji-picker-react": "^2.1.1",
     "flow": "^0.2.3",
-    "jquery": "^3.3.1",
+    "jquery": "^3.5.0",
     "lodash": "^4.17.10",
     "material-ui": "^1.0.0-beta.47",
     "pdfjs-dist": "2.0.489",
